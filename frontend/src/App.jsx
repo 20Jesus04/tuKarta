@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import { getCartas } from './services/cartasService';
+import { CartaList } from './components/CartaList';
 
-function App() {
-  const [count, setCount] = useState(0)
+export const App = () => {
+  const [cartas, setCartas] = useState([]);
+  const [error, setError] = useState(null);
+  const [cargando, setCargando] = useState(true);
 
+  useEffect(() => {
+    getCartas()
+      .then(res => {
+        setCartas(res.data);
+        setCargando(false);
+      })
+      .catch(err => {
+        console.error('Error al cargar cartas:', err);
+        setError('No se pudieron cargar las cartas');
+        setCargando(false);
+      });
+  }, []);
+
+  
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+       <div className="App">
+      {cargando && <p>Cargando cartas...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {!cargando && !error && <CartaList cartas={cartas} />}
+    </div>
     </>
   )
 }
 
-export default App
+
