@@ -5,6 +5,7 @@
   --gris-claro: #f5f5f5;
   --texto-claro: #fefefe;
   --borde: #ffae5e;
+  
 }
 
 * {
@@ -15,25 +16,27 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color:  var(--naranja);
+  background-color:  #000000;
   margin: 0;
   padding: 0;
   color: var(--texto-claro);
 }
 
 main {
-  /* padding: 20px;
+  padding: 20px;
   display: flex;
-  flex-wrap: wrap-reverse;
-  gap: 20px;
-  justify-content: center; */
-  max-width: 1200px;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1500px;
+  /* max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-  justify-content: center;
+  justify-content: center; */
 }
 
 
@@ -113,7 +116,7 @@ main {
 .logoSeccion {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0px;
 }
 
 .logo {
