@@ -1,58 +1,68 @@
-import { useEffect, useState } from 'react';
-import { getCartas } from './services/cartasService';
-import { CartaList } from './components/CartaList';
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Home } from "./components/Home";
+import Login from "./components/Login";
+import Register from "./components/Register";
 import "./App.css";
-import logo from './assets/LOGO_TUKARTAsintitulo.png';
-
+import logo from "./assets/LOGO_TUKARTAsintitulo.png";
+import {getUsuarioActual} from "./utils/auth.js"
 
 export const App = () => {
-  const [cartas, setCartas] = useState([]);
-  const [error, setError] = useState(null);
-  const [cargando, setCargando] = useState(true);
 
-  useEffect(() => {
-    getCartas()
-      .then(res => {
-        setCartas(res.data);
-        setCargando(false);
-      })
-      .catch(err => {
-        console.error('Error al cargar cartas:', err);
-        setError('No se pudieron cargar las cartas');
-        setCargando(false);
-      });
-  }, []);
+  const usuario = getUsuarioActual();
 
-  
   return (
     <>
+      <Router>
         <header className="appHeader">
-      <div className="logoSeccion">
-        <img src={logo} alt="Logo" className="logo" />
-        <span className="nombreApp">tuKarta</span>
-      </div>
+         <Link to="/">
+          <div className="logoSeccion">
+            <img src={logo} alt="Logo" className="logo" />
+            <span className="nombreApp">tuKarta</span>
+          </div>
+          </Link>
 
-      <div className="buscadorSeccion">
-        <input
-          type="text"
-          className="barraBusqueda"
-          placeholder="Buscar cartas"
-          disabled
-        />
-      </div>
+          <div className="buscadorSeccion">
+            <input
+              type="text"
+              className="barraBusqueda"
+              placeholder="Buscar cartas"
+              disabled
+            />
+          </div>
 
-      <div className="authSeccion">
-        <button className="botonAuth">Login</button>
-        <button className="botonAuth">Sign up</button>
-      </div>
-    </header>
-       <div className="App">
-      {cargando && <p>Cargando cartas...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {!cargando && !error && <CartaList cartas={cartas} />}
-    </div>
+          <div className="authSeccion">
+            {!usuario ? (
+              <>
+                <Link to="/login">
+                  <button className="botonAuth">Login</button>
+                </Link>
+                <Link to="/register">
+                  <button className="botonAuth">Sign up</button>
+                </Link>
+              </>
+            ) : (
+              <>
+              <span className="bienvenidaUsuario">Hola, {usuario.email}</span>
+              <button
+                className="botonAuth"
+                onClick={() => {
+                  localStorage.removeItem('token')
+                  window.location.reload();
+                }}>
+                  Cerrar Sesión
+              </button>
+              </>
+            )}
+            
+          </div>
+        </header>
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
     </>
-  )
-}
-
-
+  );
+};

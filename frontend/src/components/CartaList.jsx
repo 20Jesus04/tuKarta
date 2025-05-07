@@ -1,5 +1,6 @@
 import React from 'react'
 import { Carta } from './Carta';
+
 export const CartaList = ({cartas}) => {
   return (
     <>
