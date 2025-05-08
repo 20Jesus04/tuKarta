@@ -45,6 +45,7 @@ function Register() {
           placeholder="Nombre"
           onChange={handleChange}
           required
+          maxLength={30}
         />
         <input
           type="email"
@@ -52,6 +53,7 @@ function Register() {
           placeholder="Email"
           onChange={handleChange}
           required
+          maxLength={50}
         />
         <input
           type="password"
@@ -59,11 +61,12 @@ function Register() {
           placeholder="Contraseña"
           onChange={handleChange}
           required
+          maxLength={50}
         />
-        <select name="rol" onChange={handleChange} required>
-          <option value="">--Selecciona rol--</option>
-          <option value="USUARIO">Usuario</option>
-          <option value="DUENO">Dueño</option>
+        <select name="rol"   onChange={handleChange} required>
+          <option value="">--Seleccione como se quiere registrar--</option>
+          <option value="USUARIO">Como Usuario</option>
+          <option value="DUENO">Como Dueño</option>
         </select>
         <button type="submit">Registrarse</button>
 

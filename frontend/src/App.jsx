@@ -19,7 +19,7 @@ export const App = () => {
             <img src={logo} alt="Logo" className="logo" />
             <span className="nombreApp">tuKarta</span>
           </div>
-          </Link>
+        </Link>
 
           <div className="buscadorSeccion">
             <input
@@ -42,7 +42,7 @@ export const App = () => {
               </>
             ) : (
               <>
-              <span className="bienvenidaUsuario">Hola, {usuario.email}</span>
+              {/* <span className="bienvenidaUsuario">Hola, {usuario.email}</span> */}
               <button
                 className="botonAuth"
                 onClick={() => {
