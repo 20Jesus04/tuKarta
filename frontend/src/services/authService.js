@@ -3,7 +3,8 @@ import axios from "axios";
 const API_URL = "https://backend-production-94753.up.railway.app/auth";
 
 export const register = async (data) => {
-  return await axios.post(`${API_URL}/register`, data);
+  const res = await axios.post(`${API_URL}/register`, data);
+  return res.data;
 };
 
 export const login = async (data) => {

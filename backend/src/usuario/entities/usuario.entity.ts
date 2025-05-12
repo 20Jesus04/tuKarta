@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Restaurante } from '../../restaurante/entities/restaurante.entity';
 
 export enum RolUsuario {
   USUARIO = 'USUARIO',
@@ -25,4 +26,7 @@ export class Usuario {
     enum: RolUsuario,
   })
   rol: RolUsuario;
+
+  @OneToMany(() => Restaurante, (restaurante) => restaurante.dueno)
+  restaurantes: Restaurante[];
 }

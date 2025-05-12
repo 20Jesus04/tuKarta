@@ -9,7 +9,8 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() dto: CreateUsuarioDto) {
-    return this.authService.register(dto);
+    const nuevoUsuario = await this.authService.register(dto);
+    return nuevoUsuario;
   }
 
   @Post('login')

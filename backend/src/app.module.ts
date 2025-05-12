@@ -6,9 +6,13 @@ import { CartaModule } from './carta/carta.module';
 import { RestauranteModule } from './restaurante/restaurante.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'interchange.proxy.rlwy.net', // o la IP si es remota

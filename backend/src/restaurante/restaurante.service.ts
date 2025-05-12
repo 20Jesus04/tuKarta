@@ -1,26 +1,52 @@
-import { Injectable } from '@nestjs/common';
-// import { CreateRestauranteDto } from './dto/create-restaurante.dto';
-// import { UpdateRestauranteDto } from './dto/update-restaurante.dto';
+import { Restaurante } from 'src/restaurante/entities/restaurante.entity';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateRestauranteDto } from './dto/create-restaurante.dto';
+import { UpdateRestauranteDto } from './dto/update-restaurante.dto';
 
 @Injectable()
 export class RestauranteService {
-  // create(createRestauranteDto: CreateRestauranteDto) {
-  //   return 'This action adds a new restaurante';
-  // }
+  constructor(
+    @InjectRepository(Restaurante)
+    private restauranteRepository: Repository<Restaurante>,
+  ) {}
 
-  findAll() {
-    return `This action returns all restaurante`;
+  async create(
+    createRestauranteDto: CreateRestauranteDto,
+  ): Promise<Restaurante> {
+    const restaurante = this.restauranteRepository.create(createRestauranteDto);
+    return await this.restauranteRepository.save(restaurante);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} restaurante`;
+  async findAll(): Promise<Restaurante[]> {
+    return await this.restauranteRepository.find({
+      relations: ['dueno'],
+    });
   }
 
-  // update(id: number, updateRestauranteDto: UpdateRestauranteDto) {
-  //   return `This action updates a #${id} restaurante`;
-  // }
+  async findOne(id: number): Promise<Restaurante> {
+    const restaurante = await this.restauranteRepository.findOne({
+      where: { id },
+      relations: ['dueno'],
+    });
 
-  remove(id: number) {
-    return `This action removes a #${id} restaurante`;
+    if (!restaurante) {
+      throw new NotFoundException(`Restaurante con id ${id} no encontrado`);
+    }
+
+    return restaurante;
+  }
+
+  async update(
+    id: number,
+    updateRestauranteDto: UpdateRestauranteDto,
+  ): Promise<Restaurante> {
+    await this.restauranteRepository.update(id, updateRestauranteDto);
+    return this.findOne(id);
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.restauranteRepository.delete(id);
   }
 }

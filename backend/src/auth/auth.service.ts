@@ -36,9 +36,7 @@ export class AuthService {
     });
     await this.usuarioRepository.save(nuevoUsuario);
 
-    return {
-      message: 'Usuario registrado correctamente',
-    };
+    return nuevoUsuario;
   }
 
   async login(dto: LoginDto) {
