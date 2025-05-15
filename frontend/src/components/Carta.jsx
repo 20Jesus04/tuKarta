@@ -12,7 +12,7 @@ export const Carta = ({ carta }) => {
             className="imgRestaurante"
           />
         )}
-        <h3>{carta.restaurante?.nombre}</h3>
+        <h3>{ carta.restaurante?.nombre}</h3>
         <ul>
           <li>
             <strong>Fecha de creación:</strong> {fechaFormateada}

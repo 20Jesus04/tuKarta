@@ -26,10 +26,9 @@ export class Restaurante {
   @Column()
   imagen_url: string;
 
-  @Column()
-  id_dueno: number;
-
-  @ManyToOne(() => Usuario, (usuario) => usuario.restaurantes)
+  @ManyToOne(() => Usuario, (usuario) => usuario.restaurantes, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'id_dueno' })
   dueno: Usuario;
 

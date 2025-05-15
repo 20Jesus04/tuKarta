@@ -5,6 +5,7 @@ import Register from "./components/Register";
 import "./App.css";
 import logo from "./assets/LOGO_TUKARTAsintitulo.png";
 import {getUsuarioActual} from "./utils/auth.js"
+import { CrearCarta } from "./components/CrearCarta.jsx";
 
 export const App = () => {
 
@@ -47,7 +48,7 @@ export const App = () => {
                 className="botonAuth"
                 onClick={() => {
                   localStorage.removeItem('token')
-                  window.location.reload();
+                  window.location.href = "/";
                 }}>
                   Cerrar Sesión
               </button>
@@ -61,6 +62,7 @@ export const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/CrearCarta" element={<CrearCarta />} />
         </Routes>
       </Router>
     </>

@@ -7,6 +7,9 @@ import { RestauranteModule } from './restaurante/restaurante.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { CategoriaModule } from './categoria/categoria.module';
+import { ImagenesCartaModule } from './imagenes-carta/imagenes-carta.module';
+import { PlatoModule } from './plato/plato.module';
 
 @Module({
   imports: [
@@ -27,6 +30,9 @@ import { ConfigModule } from '@nestjs/config';
     RestauranteModule,
     UsuarioModule,
     AuthModule,
+    CategoriaModule,
+    ImagenesCartaModule,
+    PlatoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

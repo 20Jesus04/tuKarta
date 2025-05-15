@@ -72,6 +72,29 @@ CREATE TABLE FAVORITOS (
   )
 );
 
+
+CREATE TABLE categorias (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  id_carta INT NOT NULL REFERENCES cartas(id) ON DELETE CASCADE
+);
+
+ALTER TABLE platos DROP COLUMN categoria;
+
+ALTER TABLE platos ADD COLUMN id_categoria INT REFERENCES categorias(id) ON DELETE CASCADE;
+
+CREATE TABLE imagenes_carta (
+  id SERIAL PRIMARY KEY,
+  url TEXT NOT NULL,
+  id_carta INT NOT NULL REFERENCES cartas(id) ON DELETE CASCADE
+);
+
+ALTER TABLE cartas DROP COLUMN imagen_url;
+
+-- Si ya existe y lo quieres eliminar:
+ALTER TABLE platos DROP COLUMN id_carta;
+
+
 INSERT INTO "public".usuarios (nombre,email,"password",rol)
 VALUES ('USUARIOPRUEBA', 'ejemplo@gmail.com', '1234','DUENO');
 

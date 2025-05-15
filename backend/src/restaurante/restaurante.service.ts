@@ -4,19 +4,35 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateRestauranteDto } from './dto/create-restaurante.dto';
 import { UpdateRestauranteDto } from './dto/update-restaurante.dto';
+import { Usuario } from 'src/usuario/entities/usuario.entity';
 
 @Injectable()
 export class RestauranteService {
   constructor(
     @InjectRepository(Restaurante)
     private restauranteRepository: Repository<Restaurante>,
+    @InjectRepository(Usuario)
+    private readonly usuarioRepository: Repository<Usuario>,
   ) {}
 
   async create(
     createRestauranteDto: CreateRestauranteDto,
   ): Promise<Restaurante> {
-    const restaurante = this.restauranteRepository.create(createRestauranteDto);
-    return await this.restauranteRepository.save(restaurante);
+    const usuario = await this.usuarioRepository.findOneBy({
+      id: createRestauranteDto.id_dueno,
+    });
+    if (!usuario) {
+      throw new NotFoundException(
+        `Usuario con ID ${createRestauranteDto.id_dueno} no encontrado`,
+      );
+    }
+
+    const restaurante = this.restauranteRepository.create({
+      ...createRestauranteDto,
+      dueno: usuario,
+    });
+
+    return this.restauranteRepository.save(restaurante);
   }
 
   async findAll(): Promise<Restaurante[]> {

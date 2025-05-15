@@ -1,11 +1,11 @@
 import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 
-export class CreateCartaDto {
+export class CreateImagenesCartaDto {
   @IsNotEmpty()
   @IsString()
-  nombre: string;
+  url: string;
 
   @IsNotEmpty()
   @IsNumber()
-  id_restaurante: number;
+  id_carta: number;
 }
