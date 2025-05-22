@@ -41,6 +41,20 @@ export class RestauranteService {
     });
   }
 
+  async findByDueno(id_dueno: number): Promise<Restaurante> {
+    const restaurante = await this.restauranteRepository.findOne({
+      where: { dueno: { id: id_dueno } },
+      relations: ['dueno'],
+    });
+
+    if (!restaurante) {
+      throw new NotFoundException(
+        `No se encontró restaurante para el dueño con id ${id_dueno}`,
+      );
+    }
+
+    return restaurante;
+  }
   async findOne(id: number): Promise<Restaurante> {
     const restaurante = await this.restauranteRepository.findOne({
       where: { id },

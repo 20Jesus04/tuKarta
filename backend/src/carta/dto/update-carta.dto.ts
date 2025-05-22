@@ -1,4 +1,33 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateCartaDto } from './create-carta.dto';
+import { IsNotEmpty, IsArray, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class UpdateCartaDto extends PartialType(CreateCartaDto) {}
+class PlatoDto {
+  @IsNotEmpty()
+  nombre: string;
+
+  @IsNotEmpty()
+  descripcion: string;
+
+  @IsNotEmpty()
+  precio: number;
+}
+
+class CategoriaDto {
+  @IsNotEmpty()
+  nombre: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PlatoDto)
+  platos: PlatoDto[];
+}
+
+export class UpdateCartaDto {
+  @IsNotEmpty()
+  nombre: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CategoriaDto)
+  categorias: CategoriaDto[];
+}

@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Carta = ({ carta }) => {
   const fechaFormateada = new Date(carta.fecha_creacion).toLocaleDateString();
+  const navigate = useNavigate();
   return (
     <>
-      <div className="cajaCarta">
+      <div className="cajaCarta"
+      onClick={() => navigate(`/carta/${carta.id}`)}>
         {carta.restaurante?.imagen_url && (
           <img
             src={carta.restaurante.imagen_url}

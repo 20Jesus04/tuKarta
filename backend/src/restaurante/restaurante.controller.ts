@@ -47,7 +47,7 @@ export class RestauranteController {
     console.log('file:', file);
     const host = this.configService.get<string>('HOST_URL');
     const imageUrl = file ? `${host}/uploads/${file.filename}` : '';
-
+    console.log('URL DE LA IMAGEN: ' + imageUrl);
     const id_dueno = parseInt(body.id_dueno, 10);
     if (isNaN(id_dueno)) {
       throw new BadRequestException('id_dueno debe ser un número válido');
@@ -61,6 +61,11 @@ export class RestauranteController {
       id_dueno,
     };
     return this.restauranteService.create(restauranteDto);
+  }
+
+  @Get('dueno/:id')
+  async findByDueno(@Param('id') id: number) {
+    return this.restauranteService.findByDueno(id);
   }
 
   @Get()

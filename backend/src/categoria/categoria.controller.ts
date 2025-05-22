@@ -1,14 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CategoriaService } from './categoria.service';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto';
+import { Categoria } from './entities/categoria.entity';
 
 @Controller('categoria')
 export class CategoriaController {
   constructor(private readonly categoriaService: CategoriaService) {}
 
   @Post()
-  create(@Body() createCategoriaDto: CreateCategoriaDto) {
+  create(@Body() createCategoriaDto: CreateCategoriaDto): Promise<Categoria> {
     return this.categoriaService.create(createCategoriaDto);
   }
 
@@ -23,7 +32,10 @@ export class CategoriaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoriaDto: UpdateCategoriaDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCategoriaDto: UpdateCategoriaDto,
+  ) {
     return this.categoriaService.update(+id, updateCategoriaDto);
   }
 

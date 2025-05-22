@@ -9,9 +9,9 @@ export const CartaList = ({cartas}) => {
           <Carta key={carta.id} carta={carta} />
         ))}
 
-        <a href="#top" className="scrollTopButton">
+        {/* <a href="#top" className="scrollTopButton">
           <i className="fa fa-arrow-up fa-2x"></i>
-        </a>
+        </a> */}
       </main>
     </>
   )

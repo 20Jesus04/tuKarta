@@ -1,15 +1,64 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+} from '@nestjs/common';
 import { ImagenesCartaService } from './imagenes-carta.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 import { CreateImagenesCartaDto } from './dto/create-imagenes-carta.dto';
 import { UpdateImagenesCartaDto } from './dto/update-imagenes-carta.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('imagenes-carta')
 export class ImagenesCartaController {
-  constructor(private readonly imagenesCartaService: ImagenesCartaService) {}
+  constructor(
+    private readonly imagenesCartaService: ImagenesCartaService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Post()
-  create(@Body() createImagenesCartaDto: CreateImagenesCartaDto) {
-    return this.imagenesCartaService.create(createImagenesCartaDto);
+  @UseInterceptors(
+    FileInterceptor('imagen', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const uniqueName = Date.now() + extname(file.originalname);
+          cb(null, uniqueName);
+        },
+      }),
+    }),
+  )
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: CreateImagenesCartaDto,
+  ) {
+    if (!file) {
+      throw new BadRequestException('La imagen es obligatoria');
+    }
+
+    const host = this.configService.get<string>('HOST_URL');
+    const imageUrl = `${host}/uploads/${file.filename}`;
+
+    return this.imagenesCartaService.create(body, imageUrl);
+  }
+
+  @Get('/carta/:id')
+  async findByCarta(@Param('id') id: string) {
+    const idNumerico = parseInt(id, 10);
+    if (isNaN(idNumerico)) {
+      throw new BadRequestException('El ID de carta debe ser un número válido');
+    }
+
+    return this.imagenesCartaService.findByCarta(idNumerico);
   }
 
   @Get()
@@ -23,7 +72,10 @@ export class ImagenesCartaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateImagenesCartaDto: UpdateImagenesCartaDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateImagenesCartaDto: UpdateImagenesCartaDto,
+  ) {
     return this.imagenesCartaService.update(+id, updateImagenesCartaDto);
   }
 

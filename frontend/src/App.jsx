@@ -5,7 +5,8 @@ import Register from "./components/Register";
 import "./App.css";
 import logo from "./assets/LOGO_TUKARTAsintitulo.png";
 import {getUsuarioActual} from "./utils/auth.js"
-import { CrearCarta } from "./components/CrearCarta.jsx";
+import { CartaForm } from "./components/CartaForm.jsx";
+import { VistaContenidoCarta } from "./components/VistaContenidoCarta";
 
 export const App = () => {
 
@@ -62,7 +63,9 @@ export const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/CrearCarta" element={<CrearCarta />} />
+          <Route path="/CrearCarta" element={<CartaForm modo="Crear"/>} />
+          <Route path="/EditarCarta" element={<CartaForm modo="Editar"/>} />
+          <Route path="/Carta:id" element={<VistaContenidoCarta />} />
         </Routes>
       </Router>
     </>

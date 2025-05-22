@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API_RESTAURANTE =
-  "https://backend-production-94753.up.railway.app/restaurante";
+const API_RESTAURANTE = axios.create({
+  baseURL: "https://backend-production-94753.up.railway.app/restaurante",
+});
 
 export const crearRestauranteConImagen = async (datos) => {
   const formData = new FormData();
@@ -15,11 +16,15 @@ export const crearRestauranteConImagen = async (datos) => {
     formData.append("imagen", datos.imagen);
   }
 
-  const res = await axios.post(API_RESTAURANTE, formData, {
+  const res = await API_RESTAURANTE.post("/", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
 
   return res.data;
+};
+
+export const getRestaurantePorDueno = (idDueno) => {
+  return API_RESTAURANTE.get(`/dueno/${idDueno}`);
 };

@@ -1,14 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PlatoService } from './plato.service';
 import { CreatePlatoDto } from './dto/create-plato.dto';
 import { UpdatePlatoDto } from './dto/update-plato.dto';
+import { Plato } from './entities/plato.entity';
 
 @Controller('plato')
 export class PlatoController {
   constructor(private readonly platoService: PlatoService) {}
 
   @Post()
-  create(@Body() createPlatoDto: CreatePlatoDto) {
+  create(@Body() createPlatoDto: CreatePlatoDto): Promise<Plato> {
     return this.platoService.create(createPlatoDto);
   }
 

@@ -4,9 +4,9 @@ import { Carta } from './entities/carta.entity';
 import { RestauranteModule } from 'src/restaurante/restaurante.module';
 import { CategoriaModule } from 'src/categoria/categoria.module';
 import { ImagenesCartaModule } from 'src/imagenes-carta/imagenes-carta.module';
-
 import { CartaService } from './carta.service';
 import { CartaController } from './carta.controller';
+import { PlatoModule } from 'src/plato/plato.module';
 
 @Module({
   imports: [
@@ -14,6 +14,7 @@ import { CartaController } from './carta.controller';
     forwardRef(() => RestauranteModule),
     forwardRef(() => CategoriaModule),
     forwardRef(() => ImagenesCartaModule),
+    forwardRef(() => PlatoModule),
   ],
   controllers: [CartaController],
   providers: [CartaService],
