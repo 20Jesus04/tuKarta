@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { getRestaurantePorDueno } from "../services/restauranteService";
 import { getUsuarioActual } from "../utils/auth";
-import { actualizarCartaCompleta, crearCartaCompleta, getCartaPorRestaurante } from "../services/cartasService";
+import {
+  actualizarCartaCompleta,
+  crearCartaCompleta,
+  getCartaPorRestaurante,
+} from "../services/cartasService";
 import { ConfirmModal } from "./ConfirmModal";
 import { useNavigate } from "react-router-dom";
 
-export const CartaForm = ({modo}) => {
+export const CartaForm = ({ modo }) => {
   const [nombreCarta, setNombreCarta] = useState("");
   const [categorias, setCategorias] = useState([]);
   const [mensaje, setMensaje] = useState("");
@@ -14,7 +18,7 @@ export const CartaForm = ({modo}) => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const navigate = useNavigate();
 
- useEffect(() => {
+  useEffect(() => {
     const usuario = getUsuarioActual();
     if (!usuario || !usuario.sub) return;
 
@@ -43,8 +47,6 @@ export const CartaForm = ({modo}) => {
       });
   }, [modo]);
 
-
-
   const handleAddCategoria = () => {
     setCategorias([...categorias, { nombre: "", platos: [] }]);
   };
@@ -52,6 +54,12 @@ export const CartaForm = ({modo}) => {
   const handleRemoveCategoria = (index) => {
     const nuevas = [...categorias];
     nuevas.splice(index, 1);
+    setCategorias(nuevas);
+  };
+
+  const handleRemovePlato = (catIndex, platoIndex) => {
+    const nuevas = [...categorias];
+    nuevas[catIndex].platos.splice(platoIndex, 1);
     setCategorias(nuevas);
   };
 
@@ -106,140 +114,148 @@ export const CartaForm = ({modo}) => {
     }
   };
 
- const actualizarCartaEnBackend = async () => {
-  try {
-    await actualizarCartaCompleta(idCarta, {
-      nombre: nombreCarta,
-      categorias
-    });
+  const actualizarCartaEnBackend = async () => {
+    try {
+      await actualizarCartaCompleta(idCarta, {
+        nombre: nombreCarta,
+        categorias,
+      });
 
-    setMostrarModal(false);
-    setMensaje("Carta actualizada correctamente");
-    navigate("/");
-  } catch (err) {
-    console.error(err);
-    setMensaje("Error al actualizar la carta");
-    setMostrarModal(false);
-  }
-};
-
+      setMostrarModal(false);
+      setMensaje("Carta actualizada correctamente");
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      setMensaje("Error al actualizar la carta");
+      setMostrarModal(false);
+    }
+  };
 
   return (
-    <div className="carta-form">
-      <h2 className="form-title">{modo} carta</h2>
-      <div className="form-group">
-        <label className="nombre-carta">Nombre de la carta:</label>
-        <input
-          id="nombre-carta"
-          type="text"
-          value={nombreCarta}
-          onChange={(e) => setNombreCarta(e.target.value)}
-          placeholder="Ej: Carta de verano"
-          required
-        />
-      </div>
+    <>
+      <div className="carta-form">
+        <h2 className="form-title">{modo} carta</h2>
+        <div className="form-group">
+          <label className="nombre-carta">Nombre de la carta:</label>
+          <input
+            id="nombre-carta"
+            type="text"
+            value={nombreCarta}
+            onChange={(e) => setNombreCarta(e.target.value)}
+            placeholder="Ej: Carta de verano"
+            required
+          />
+        </div>
 
-      {categorias.map((cat, catIndex) => (
-        <div key={catIndex} className="categoria-temporal">
-          <h4>Categoría {catIndex + 1}</h4>
+        {categorias.map((cat, catIndex) => (
+          <div key={catIndex} className="categoria-temporal">
+            <h4>Categoría {catIndex + 1}</h4>
 
-          <div className="form-group">
-            <label>Nombre:</label>
-            <input
-              type="text"
-              value={cat.nombre}
-              onChange={(e) => {
+            <div className="form-group">
+              <label>Nombre:</label>
+              <input
+                type="text"
+                value={cat.nombre}
+                onChange={(e) => {
+                  const nuevas = [...categorias];
+                  nuevas[catIndex].nombre = e.target.value;
+                  setCategorias(nuevas);
+                }}
+              />
+            </div>
+
+            {cat.platos.map((plato, platoIndex) => (
+              <div key={platoIndex} className="plato-formulario">
+                <h5>Plato {platoIndex + 1}</h5>
+                <div className="form-group">
+                  <label>Nombre del plato:</label>
+                  <input
+                    type="text"
+                    value={plato.nombre}
+                    onChange={(e) => {
+                      const nuevas = [...categorias];
+                      nuevas[catIndex].platos[platoIndex].nombre =
+                        e.target.value;
+                      setCategorias(nuevas);
+                    }}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Descripción:</label>
+                  <input
+                    type="text"
+                    value={plato.descripcion}
+                    onChange={(e) => {
+                      const nuevas = [...categorias];
+                      nuevas[catIndex].platos[platoIndex].descripcion =
+                        e.target.value;
+                      setCategorias(nuevas);
+                    }}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Precio:</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={plato.precio}
+                    onChange={(e) => {
+                      const nuevas = [...categorias];
+                      nuevas[catIndex].platos[platoIndex].precio = parseFloat(
+                        e.target.value
+                      );
+                      setCategorias(nuevas);
+                    }}
+                  />
+                </div>
+                <button
+                  className="btn-eliminar-plato"
+                  onClick={() => handleRemovePlato(catIndex, platoIndex)}
+                >
+                  Eliminar plato
+                </button>
+              </div>
+            ))}
+
+            <button
+              className="btn-agregar-plato"
+              onClick={() => {
                 const nuevas = [...categorias];
-                nuevas[catIndex].nombre = e.target.value;
+                nuevas[catIndex].platos.push({
+                  nombre: "",
+                  descripcion: "",
+                  precio: 0,
+                });
                 setCategorias(nuevas);
               }}
-            />
+            >
+              Añadir plato
+            </button>
+
+            <button
+              className="btn-eliminar-categoria"
+              onClick={() => handleRemoveCategoria(catIndex)}
+            >
+              Eliminar categoría
+            </button>
           </div>
-
-          {cat.platos.map((plato, platoIndex) => (
-            <div key={platoIndex} className="plato-formulario">
-              <h5>Plato {platoIndex + 1}</h5>
-              <div className="form-group">
-                <label>Nombre del plato:</label>
-                <input
-                  type="text"
-                  value={plato.nombre}
-                  onChange={(e) => {
-                    const nuevas = [...categorias];
-                    nuevas[catIndex].platos[platoIndex].nombre = e.target.value;
-                    setCategorias(nuevas);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <label>Descripción:</label>
-                <input
-                  type="text"
-                  value={plato.descripcion}
-                  onChange={(e) => {
-                    const nuevas = [...categorias];
-                    nuevas[catIndex].platos[platoIndex].descripcion =
-                      e.target.value;
-                    setCategorias(nuevas);
-                  }}
-                />
-              </div>
-              <div className="form-group">
-                <label>Precio:</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={plato.precio}
-                  onChange={(e) => {
-                    const nuevas = [...categorias];
-                    nuevas[catIndex].platos[platoIndex].precio = parseFloat(
-                      e.target.value
-                    );
-                    setCategorias(nuevas);
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-
-          <button
-            className="btn-agregar-plato"
-            onClick={() => {
-              const nuevas = [...categorias];
-              nuevas[catIndex].platos.push({
-                nombre: "",
-                descripcion: "",
-                precio: 0,
-              });
-              setCategorias(nuevas);
-            }}
-          >
-            Añadir plato
-          </button>
-
-          <button
-            className="btn-eliminar-categoria"
-            onClick={() => handleRemoveCategoria(catIndex)}
-          >
-            Eliminar categoría
-          </button>
-        </div>
-      ))}
-      <button className="btn-agregar-categoria" onClick={handleAddCategoria}>
-        Añadir categoría
-      </button>
-      <button className="btn-crear-carta" onClick={handleCrearCarta}>
-        {modo} carta
-      </button>
-      {mensaje && <p className="mensaje-error">{mensaje}</p>}
-      <ConfirmModal
-        visible={mostrarModal}
-        modo={modo}
-        onConfirm={
-          modo === "Editar" ? actualizarCartaEnBackend : crearCartaEnBackend
-        }
-        onCancel={() => setMostrarModal(false)}
-      />
-    </div>
+        ))}
+        <button className="btn-agregar-categoria" onClick={handleAddCategoria}>
+          Añadir categoría
+        </button>
+        <button className="btn-crear-carta" onClick={handleCrearCarta}>
+          {modo} carta
+        </button>
+        {mensaje && <p className="mensaje-error">{mensaje}</p>}
+        <ConfirmModal
+          visible={mostrarModal}
+          modo={modo}
+          onConfirm={
+            modo === "Editar" ? actualizarCartaEnBackend : crearCartaEnBackend
+          }
+          onCancel={() => setMostrarModal(false)}
+        />
+      </div>
+    </>
   );
 };

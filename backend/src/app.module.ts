@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CategoriaModule } from './categoria/categoria.module';
 import { ImagenesCartaModule } from './imagenes-carta/imagenes-carta.module';
 import { PlatoModule } from './plato/plato.module';
+import { ValoracionModule } from './valoracion/valoracion.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { PlatoModule } from './plato/plato.module';
     CategoriaModule,
     ImagenesCartaModule,
     PlatoModule,
+    ValoracionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,21 +1,23 @@
-import React from 'react';
+import React from "react";
 
-export const ConfirmModal = ({modo, visible, onConfirm, onCancel }) => {
+export const ConfirmModal = ({ modo, visible, onConfirm, onCancel }) => {
   if (!visible) return null;
 
   return (
-    <div className="modal-confirmacion">
-      <div className="modal-contenido">
-        <h3>¿Deseas {modo} la carta con los datos actuales?</h3>
-        <div className="modal-botones">
-          <button className="btn-confirmar" onClick={onConfirm}>
-            Sí, {modo}
-          </button>
-          <button className="btn-cancelar" onClick={onCancel}>
-            Cancelar
-          </button>
+    <>
+      <div className="modal-confirmacion">
+        <div className="modal-contenido">
+          <h3>¿Deseas {modo} la carta con los datos actuales?</h3>
+          <div className="modal-botones">
+            <button className="btn-confirmar" onClick={onConfirm}>
+              Sí, {modo}
+            </button>
+            <button className="btn-cancelar" onClick={onCancel}>
+              Cancelar
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

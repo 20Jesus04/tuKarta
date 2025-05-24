@@ -27,6 +27,11 @@ export class CartaController {
     return this.cartaService.findAll();
   }
 
+  @Get(':id/completa')
+  getCartaPorId(@Param('id', ParseIntPipe) id: number) {
+    return this.cartaService.findByIdConCategoriasYPlatos(id);
+  }
+
   @Get('/restaurante/:id_restaurante')
   getCartaPorRestaurante(@Param('id_restaurante', ParseIntPipe) id: number) {
     return this.cartaService.findByRestauranteId(id);

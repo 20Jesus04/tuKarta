@@ -39,7 +39,7 @@ export const Home = () => {
         .catch((err) => {
           console.error("Error al obtener restaurante:", err);
         });
-    }
+    } 
   }, []);
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Restaurante } from '../../restaurante/entities/restaurante.entity';
+import { Valoracion } from 'src/valoracion/entities/valoracion.entity';
 
 export enum RolUsuario {
   USUARIO = 'USUARIO',
@@ -29,4 +30,7 @@ export class Usuario {
 
   @OneToMany(() => Restaurante, (restaurante) => restaurante.dueno)
   restaurantes: Restaurante[];
+
+  @OneToMany(() => Valoracion, (valoracion) => valoracion.id_usuario)
+  valoraciones: Valoracion[];
 }

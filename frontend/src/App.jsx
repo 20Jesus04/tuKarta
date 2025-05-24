@@ -65,7 +65,7 @@ export const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/CrearCarta" element={<CartaForm modo="Crear"/>} />
           <Route path="/EditarCarta" element={<CartaForm modo="Editar"/>} />
-          <Route path="/Carta:id" element={<VistaContenidoCarta />} />
+          <Route path="/Carta/:id" element={<VistaContenidoCarta />} />
         </Routes>
       </Router>
     </>

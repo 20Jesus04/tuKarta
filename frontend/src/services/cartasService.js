@@ -11,6 +11,10 @@ export const getCartaPorRestaurante = (id_restaurante) => {
   return API.get(`/carta/restaurante/${id_restaurante}`);
 };
 
+export const getCartaPorId = (id) => {
+  return API.get(`/carta/${id}/completa`);
+};
+
 // Crear carta + categorías + platos
 export const crearCartaCompleta = async (
   nombre,

@@ -9,6 +9,7 @@ import {
 import { Restaurante } from 'src/restaurante/entities/restaurante.entity';
 import { Categoria } from 'src/categoria/entities/categoria.entity';
 import { ImagenesCarta } from 'src/imagenes-carta/entities/imagenes-carta.entity';
+import { Valoracion } from 'src/valoracion/entities/valoracion.entity';
 
 @Entity('cartas')
 export class Carta {
@@ -30,4 +31,7 @@ export class Carta {
 
   @OneToMany(() => ImagenesCarta, (imagen) => imagen.id_carta)
   imagenes: ImagenesCarta[];
+
+  @OneToMany(() => Valoracion, (valoracion) => valoracion.id_carta)
+  valoraciones: Valoracion[];
 }

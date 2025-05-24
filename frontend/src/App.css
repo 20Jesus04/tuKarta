@@ -121,6 +121,8 @@ a {
   max-width: 400px;
 }
 
+/* login y register */
+
 .authSeccion {
   display: flex;
   gap: 10px;
@@ -358,3 +360,204 @@ input[type="number"] {
   border-radius: 6px;
   cursor: pointer;
 }
+
+/* Vista de carta */
+
+.contenedor-carta {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #fffbe6;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Georgia', serif;
+}
+
+.titulo-restaurante {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 0.2rem;
+  color: #333;
+}
+
+.subtitulo-carta {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #777;
+}
+
+.bloque-categoria {
+  margin-bottom: 2rem;
+}
+
+.nombre-categoria {
+  border-bottom: 2px solid #d4a373;
+  font-size: 1.6rem;
+  color: #a0522d;
+  margin-bottom: 1rem;
+  padding-bottom: 0.3rem;
+}
+
+.lista-platos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plato {
+  margin-bottom: 1.2rem;
+}
+
+.plato-info {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.plato-nombre {
+  color: #333;
+}
+
+.plato-precio {
+  color: #444;
+}
+
+.plato-descripcion {
+  margin: 0.3rem 0 0 0;
+  color: #666;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.mensaje-cargando,
+.mensaje-error {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+}
+
+/* valoraciones  */
+.clasificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+  font-size: 2rem;
+}
+.clasificacion input {
+  display: none;
+}
+.clasificacion label {
+  color: #ccc;
+  cursor: pointer;
+}
+.clasificacion input:checked ~ label,
+.clasificacion label:hover,
+.clasificacion label:hover ~ label {
+  color: gold;
+}
+
+.valoraciones-container {
+  max-width: 600px;
+  margin: 0 auto; /* 👈 Centrado horizontal */
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.valoraciones-titulo {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.lista-valoraciones {
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fdfdfd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.valoracion-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ababab;
+}
+
+.valoracion-item:last-child {
+  border-bottom: none;
+}
+
+.valoracion-cabecera {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.valoracion-email {
+  color: #888;
+  font-weight: normal;
+  font-size: 0.85rem;
+}
+
+.valoracion-estrellas {
+  font-size: 1.2rem;
+  color: gold;
+  margin-bottom: 5px;
+}
+
+.valoracion-comentario {
+  margin: 0;
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+/* Responsive en pantallas pequeñas */
+@media (max-width: 480px) {
+  .valoraciones-container {
+    padding: 0.5rem;
+  }
+
+  .valoracion-cabecera {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .valoraciones-titulo {
+    font-size: 1.5rem;
+  }
+}
+
+
+.mensaje-info {
+  background-color: #f0f8ff;
+  border-left: 4px solid #cc9600;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.mensaje-info p {
+  padding: 12px 16px;
+}
+
+.mensaje-info button {
+  padding: 12px 16px;
+}
+

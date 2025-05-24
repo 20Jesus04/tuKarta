@@ -24,6 +24,19 @@ export class CartaService {
     private readonly platoRepository: Repository<Plato>,
   ) {}
 
+  async findByIdConCategoriasYPlatos(id: number): Promise<Carta> {
+    const carta = await this.cartaRepository.findOne({
+      where: { id },
+      relations: ['categorias', 'categorias.platos', 'restaurante'],
+    });
+
+    if (!carta) {
+      throw new NotFoundException(`Carta con ID ${id} no encontrada`);
+    }
+
+    return carta;
+  }
+
   async create(createCartaDto: CreateCartaDto): Promise<Carta> {
     const restaurante = await this.restauranteRepository.findOne({
       where: { id: createCartaDto.id_restaurante },
