@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { getCartas, getCartaPorRestaurante } from "../services/cartasService";
+import {
+  getCartas,
+  getCartaPorRestaurante,
+  buscarCartas,
+} from "../services/cartasService";
 import { CartaList } from "./CartaList";
 import { useNavigate } from "react-router-dom";
 import { getUsuarioActual } from "../utils/auth.js";
 import { getRestaurantePorDueno } from "../services/restauranteService";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-export const Home = () => {
+export const Home = ({ terminoBusqueda }) => {
   const [cartas, setCartas] = useState([]);
   const [error, setError] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [rolUsuario, setRolUsuario] = useState(null);
   const [modoBoton, setModoBoton] = useState("Crear");
+  const [mostrarFiltros, setMostrarFiltros] = useState(false);
+  const [orden, setOrden] = useState("");
 
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const usuario = getUsuarioActual();
@@ -33,34 +40,82 @@ export const Home = () => {
               }
             })
             .catch(() => {
-              setModoBoton("Crear"); // no tiene carta
+              setModoBoton("Crear"); // Si no tiene carta
             });
         })
         .catch((err) => {
           console.error("Error al obtener restaurante:", err);
         });
-    } 
+    }
   }, []);
 
   useEffect(() => {
-    getCartas()
-      .then((res) => {
-        setCartas(res.data);
-        setCargando(false);
-      })
-      .catch((err) => {
-        console.error("Error al cargar cartas:", err);
-        setError("No se pudieron cargar las cartas");
-        setCargando(false);
-      });
-  }, []);
+  const cartasBuscadas = async () => {
+    try {
+      setCargando(true);
+
+      let res;
+      const hayBusqueda = terminoBusqueda?.trim();
+      const hayFiltros = !!orden;
+
+
+      if (hayBusqueda || hayFiltros) {
+        res = await buscarCartas(terminoBusqueda, orden);
+      } else {
+        res = await getCartas();
+      }
+
+      const cartasRecibidas = Array.isArray(res.data) ? res.data : [];
+      setCartas(cartasRecibidas);
+      setError(null);
+    } catch (err) {
+      console.error("Error al buscar cartas:", err);
+      setError("No se pudieron cargar las cartas");
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  cartasBuscadas();
+}, [terminoBusqueda, orden]);
 
   return (
     <>
       <div className="App">
+        <button
+          className="btnFiltro"
+          onClick={() => setMostrarFiltros(!mostrarFiltros)}
+        >
+          {mostrarFiltros ? "Ocultar filtros" : "Filtrar"}
+        </button>
+
+        {mostrarFiltros && (
+          <div className="filtroCaja">
+            <label>
+              Ordenar por:{" "}
+              <select value={orden} onChange={(e) => setOrden(e.target.value)}>
+                <option value="">-- Ninguno --</option>
+                <option value="valoracion">Mejor valorados</option>
+                <option value="reciente">Más recientes</option>
+                <option value="precio">Más baratos</option>
+                <option value="precio_desc">Más caros</option>
+
+              </select>
+            </label>
+          </div>
+        )}
+
         {cargando && <p>Cargando cartas...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {!cargando && !error && <CartaList cartas={cartas} />}
+        {!cargando &&
+          !error &&
+          (cartas.length > 0 ? (
+            <CartaList cartas={cartas} />
+          ) : (
+            <div className="mensajeSinResultados">
+              <p>La carta que buscas no se ha podido encontrar.</p>
+            </div>
+          ))}
       </div>
 
       {rolUsuario === "DUENO" && (
@@ -74,15 +129,11 @@ export const Home = () => {
         >
           {modoBoton === "Editar" ? (
             <>
-              <i
-                className="fa-solid fa-pen-to-square"
-              ></i>
+              <i className="fa-solid fa-pen-to-square"></i>
             </>
           ) : (
             <>
-              <i
-                className="fa-solid fa-plus"
-              ></i>
+              <i className="fa-solid fa-plus"></i>
             </>
           )}
         </button>

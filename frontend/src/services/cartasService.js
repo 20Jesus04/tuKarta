@@ -11,6 +11,15 @@ export const getCartaPorRestaurante = (id_restaurante) => {
   return API.get(`/carta/restaurante/${id_restaurante}`);
 };
 
+export const buscarCartas = (termino, orden) => {
+  const params = new URLSearchParams();
+
+  if (termino) params.append("q", termino);
+  if (orden) params.append("orden", orden);
+
+  return API.get(`/carta/buscar?${params.toString()}`);
+};
+
 export const getCartaPorId = (id) => {
   return API.get(`/carta/${id}/completa`);
 };

@@ -31,6 +31,7 @@ main {
   max-width: 1500px;
 }
 
+/* LISTADO DE CARTAS */
 .cajaCarta {
   background-color: var(--negro);
   border: 1px solid var(--borde);
@@ -68,7 +69,7 @@ main {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
-
+/* APP INFO */
 .appHeader {
   background-color: #1e1e1e;
   padding: 1rem 1rem;
@@ -119,6 +120,15 @@ a {
   box-shadow: 0 0 5px rgba(248, 100, 1, 0.1);
   width: 100%;
   max-width: 400px;
+}
+
+.mensajeSinResultados {
+  color: white;
+  background-color: rgba(255, 0, 0, 0.1);
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 /* login y register */
@@ -561,3 +571,42 @@ input[type="number"] {
   padding: 12px 16px;
 }
 
+.media-valoracion {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0.5rem 0 1rem;
+  color: #333;
+}
+
+.estrella-icono {
+  color: gold;
+  margin-right: 4px;
+  font-size: 1rem;
+  vertical-align: middle;
+}
+
+
+.media-valoracion-caja {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0.5rem 0 1rem;
+}
+
+/* FILTRO  */
+.filtroCaja {
+  background-color: #222;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 10px;
+  color: white;
+}
+
+.btnFiltro {
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+}

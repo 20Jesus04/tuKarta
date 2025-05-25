@@ -76,6 +76,22 @@ export class ValoracionService {
     return !!valoracion;
   }
 
+  async obtenerEstadisticasPorCarta(
+    id_carta: number,
+  ): Promise<{ media: number; total: number }> {
+    const result = (await this.valoracionRepo
+      .createQueryBuilder('valoracion')
+      .select('AVG(valoracion.puntuacion)', 'media')
+      .addSelect('COUNT(valoracion.id)', 'total')
+      .where('valoracion.id_carta = :id', { id: id_carta })
+      .getRawOne()) as { media: string | null; total: string | null };
+
+    return {
+      media: parseFloat(result.media ?? '0'),
+      total: parseInt(result.total ?? '0'),
+    };
+  }
+
   findAll() {
     return `This action returns all valoracion`;
   }

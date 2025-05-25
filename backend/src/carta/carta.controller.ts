@@ -7,6 +7,7 @@ import {
   Post,
   Body,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { CartaService } from './carta.service';
 import { CreateCartaDto } from './dto/create-carta.dto';
@@ -25,6 +26,14 @@ export class CartaController {
   @Get()
   findAll() {
     return this.cartaService.findAll();
+  }
+
+  @Get('buscar')
+  async buscarCartas(
+    @Query('q') termino: string,
+    @Query('orden') orden: string,
+  ) {
+    return this.cartaService.buscarCartasGlobal(termino, orden);
   }
 
   @Get(':id/completa')

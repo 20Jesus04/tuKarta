@@ -17,6 +17,11 @@ export class ValoracionController {
     return this.valoracionService.obtenerPorCarta(id);
   }
 
+  @Get('estadisticas/:id')
+  async obtenerEstadisticas(@Param('id') id: number) {
+    return this.valoracionService.obtenerEstadisticasPorCarta(id);
+  }
+
   @Get()
   findAll() {
     return this.valoracionService.findAll();

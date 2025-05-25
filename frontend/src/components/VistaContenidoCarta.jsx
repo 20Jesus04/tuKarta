@@ -1,24 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { getCartaPorId } from "../services/cartasService";
 import { Valoraciones } from "./Valoraciones";
+import { getEstadisticasPorCarta } from "../services/valoracionServices";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 export const VistaContenidoCarta = () => {
   const { id } = useParams();
   const [carta, setCarta] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
-  useEffect(() => {
+  const [estadisticas, setEstadisticas] = useState(null);
+
+  const cargarCarta = useCallback(() => {
     getCartaPorId(id)
       .then((res) => {
         setCarta(res.data);
         setCargando(false);
       })
       .catch((err) => {
-        console.error(err);
-        setError("No se pudo cargar la carta");
+        setError("No se pudo cargar la carta" + err);
         setCargando(false);
       });
+  }, [id]);
+
+  const cargarEstadisticas = useCallback(() => {
+    getEstadisticasPorCarta(id).then((res) => {
+      setEstadisticas(res.data);
+    });
+  }, [id]);
+
+  useEffect(() => {
+    cargarCarta();
+    cargarEstadisticas();
   }, [id]);
 
   if (cargando) return <p className="mensaje-cargando">Cargando carta...</p>;
@@ -30,6 +45,13 @@ export const VistaContenidoCarta = () => {
       <div className="contenedor-carta">
         <h1 className="titulo-restaurante">{carta.restaurante?.nombre}</h1>
         <h3 className="subtitulo-carta">{carta.nombre}</h3>
+
+        {estadisticas && estadisticas.total > 0 && (
+          <p className="media-valoracion">
+            <FontAwesomeIcon icon={faStar} className="estrella-icono" />
+            {estadisticas.media.toFixed(1)} ({estadisticas.total})
+          </p>
+        )}
 
         {carta.categorias.map((cat, i) => (
           <div key={i} className="bloque-categoria">
@@ -52,8 +74,10 @@ export const VistaContenidoCarta = () => {
           </div>
         ))}
       </div>
-      <Valoraciones idCarta={carta.id} />
+      <Valoraciones
+        idCarta={carta.id}
+        onValoracionRealizada={cargarEstadisticas}
+      />
     </>
-    
   );
 };

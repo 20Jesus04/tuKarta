@@ -11,3 +11,7 @@ export const getValoracionesPorCarta = (idCarta) => {
 export const enviarValoracion = (data) => {
   return API_VALORACION.post("/", data);
 };
+
+export const getEstadisticasPorCarta = (idCarta) => {
+  return API_VALORACION.get(`/estadisticas/${idCarta}`);
+};

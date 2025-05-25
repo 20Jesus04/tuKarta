@@ -6,7 +6,7 @@ import {
 import { getUsuarioActual } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
 
-export const Valoraciones = ({ idCarta }) => {
+export const Valoraciones = ({ idCarta, onValoracionRealizada }) => {
   const [valoraciones, setValoraciones] = useState([]);
   const [comentario, setComentario] = useState("");
   const [puntuacion, setPuntuacion] = useState(5);
@@ -39,6 +39,10 @@ export const Valoraciones = ({ idCarta }) => {
     setYaValorado(true);
     const nuevas = await getValoracionesPorCarta(idCarta);
     setValoraciones(nuevas.data);
+
+    if (typeof onValoracionRealizada === "function") {
+      onValoracionRealizada();
+    }
   };
 
   return (

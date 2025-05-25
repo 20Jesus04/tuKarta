@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getEstadisticasPorCarta } from "../services/valoracionServices";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+
+
 
 export const Carta = ({ carta }) => {
+  const [estadisticas, setEstadisticas] = useState(null);
   const fechaFormateada = new Date(carta.fecha_creacion).toLocaleDateString();
   const navigate = useNavigate();
+
+   useEffect(() => {
+    getEstadisticasPorCarta(carta.id).then((res) => {
+      setEstadisticas(res.data);
+    });
+  }, [carta.id]);
+
   return (
     <>
       <div className="cajaCarta"
@@ -15,6 +28,13 @@ export const Carta = ({ carta }) => {
             className="imgRestaurante"
           />
         )}
+        {estadisticas && estadisticas.total > 0 && (
+        <p className="media-valoracion-caja">
+          <FontAwesomeIcon icon={faStar} className="estrella-icono" />
+          {estadisticas.media.toFixed(1)} ({estadisticas.total})
+        </p>
+        )}
+
         <h3>{ carta.restaurante?.nombre}</h3>
         <ul>
           <li>
