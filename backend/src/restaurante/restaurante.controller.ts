@@ -18,6 +18,7 @@ import { CreateRestauranteDto } from './dto/create-restaurante.dto';
 import { UpdateRestauranteDto } from './dto/update-restaurante.dto';
 import { Express, Request } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { subirImagenDesdeBuffer } from 'src/common/cloudinary';
 
 @Controller('restaurante')
 export class RestauranteController {
@@ -27,27 +28,18 @@ export class RestauranteController {
   ) {}
 
   @Post()
-  @UseInterceptors(
-    FileInterceptor('imagen', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req: Request, file: Express.Multer.File, cb) => {
-          const uniqueName = Date.now() + extname(file.originalname);
-          cb(null, uniqueName);
-        },
-      }),
-    }),
-  )
-  async create(
-    @UploadedFile() file: Express.Multer.File,
-
-    @Body() body: any,
-  ) {
+  @UseInterceptors(FileInterceptor('imagen'))
+  async create(@UploadedFile() file: Express.Multer.File, @Body() body: any) {
     console.log('BODY:', body);
     console.log('file:', file);
-    const host = this.configService.get<string>('HOST_URL');
-    const imageUrl = file ? `${host}/uploads/${file.filename}` : '';
-    console.log('URL DE LA IMAGEN: ' + imageUrl);
+
+    // ✅ Subida a Cloudinary
+    let imageUrl = '';
+    if (file) {
+      imageUrl = await subirImagenDesdeBuffer(file.buffer);
+      console.log('URL DE LA IMAGEN (Cloudinary): ' + imageUrl);
+    }
+
     const id_dueno = parseInt(body.id_dueno, 10);
     if (isNaN(id_dueno)) {
       throw new BadRequestException('id_dueno debe ser un número válido');
@@ -60,6 +52,7 @@ export class RestauranteController {
       imagen_url: imageUrl,
       id_dueno,
     };
+
     return this.restauranteService.create(restauranteDto);
   }
 

@@ -16,6 +16,7 @@ export const CartaForm = ({ modo }) => {
   const [idRestaurante, setIdRestaurante] = useState(null);
   const [idCarta, setIdCarta] = useState(null);
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [procesando, setProcesando] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,6 +65,8 @@ export const CartaForm = ({ modo }) => {
   };
 
   const handleCrearCarta = async () => {
+    if (procesando) return;
+
     if (!nombreCarta.trim()) {
       setMensaje("La carta debe tener un nombre");
       return;
@@ -102,6 +105,8 @@ export const CartaForm = ({ modo }) => {
   };
 
   const crearCartaEnBackend = async () => {
+    if (procesando) return;
+    setProcesando(true);
     try {
       await crearCartaCompleta(nombreCarta, idRestaurante, categorias);
       setMensaje("Carta creada correctamente");
@@ -111,10 +116,15 @@ export const CartaForm = ({ modo }) => {
     } catch (err) {
       console.error(err);
       setMensaje("Error al crear la carta");
+    }finally {
+      setProcesando(false);
+      setMostrarModal(false);
     }
   };
 
   const actualizarCartaEnBackend = async () => {
+    if (procesando) return;
+    setProcesando(true);
     try {
       await actualizarCartaCompleta(idCarta, {
         nombre: nombreCarta,
@@ -127,6 +137,9 @@ export const CartaForm = ({ modo }) => {
     } catch (err) {
       console.error(err);
       setMensaje("Error al actualizar la carta");
+      setMostrarModal(false);
+    } finally {
+      setProcesando(false);
       setMostrarModal(false);
     }
   };
@@ -198,7 +211,7 @@ export const CartaForm = ({ modo }) => {
                   <input
                     type="number"
                     step="0.01"
-                    value={plato.precio}
+                    value={plato.precio ?? ""}
                     onChange={(e) => {
                       const valor = e.target.value;
 

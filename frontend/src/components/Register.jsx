@@ -12,7 +12,7 @@ function Register() {
   });
 
   const [restauranteData, setRestauranteData] = useState({
-    nombre: "",
+    nombre_restaurante: "",
     direccion: "",
     telefono: "",
   });
@@ -29,33 +29,35 @@ function Register() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
-  setSuccess("");
+    e.preventDefault();
+    setError("");
+    setSuccess("");
 
-  try {
-    // 1. Registrar el usuario
-    const nuevoUsuario = await register(formData);
-    console.log("ID del dueño enviado:", nuevoUsuario.id);
+    try {
+      // 1. Registrar el usuario
+      const nuevoUsuario = await register(formData);
+      console.log("ID del dueño enviado:", nuevoUsuario.id);
 
-    // 2. Si es DUENO, crear el restaurante
-    if (formData.rol === "DUENO") {
-      await crearRestauranteConImagen({
-        ...restauranteData,
-        imagen,
-        id_dueno: nuevoUsuario.id,
-      });
+      // 2. Si es DUENO, crear el restaurante
+      if (formData.rol === "DUENO") {
+        await crearRestauranteConImagen({
+          nombre: restauranteData.nombre_restaurante,
+          direccion: restauranteData.direccion,
+          telefono: restauranteData.telefono,
+          imagen,
+          id_dueno: nuevoUsuario.id,
+        });
+      }
+
+      setSuccess("¡Registro exitoso! Es momento de iniciar sesión.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+      setError("No se pudo registrar. ¿El email ya está en uso?");
     }
-
-    setSuccess("¡Registro exitoso! Es momento de iniciar sesión.");
-    setTimeout(() => {
-      navigate("/login");
-    }, 2000);
-  } catch (err) {
-    console.error(err);
-    setError("No se pudo registrar. ¿El email ya está en uso?");
-  }
-};
+  };
   const handleRestauranteChange = (e) => {
     const { name, value } = e.target;
     setRestauranteData((prev) => ({ ...prev, [name]: value }));
@@ -103,7 +105,7 @@ function Register() {
             <h3>Información del Restaurante</h3>
             <input
               type="text"
-              name="nombre"
+              name="nombre_restaurante"
               placeholder="Nombre del restaurante"
               onChange={handleRestauranteChange}
               required
