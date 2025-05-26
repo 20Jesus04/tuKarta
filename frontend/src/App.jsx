@@ -8,7 +8,7 @@ import logo from "./assets/LOGO_TUKARTAsintitulo.png";
 import { getUsuarioActual } from "./utils/auth.js";
 import { CartaForm } from "./components/CartaForm.jsx";
 import { VistaContenidoCarta } from "./components/VistaContenidoCarta";
-import { AdminDashboard } from "./components/adminDashboard.jsx";
+import { AdminDashboard } from "./components/AdminDashboard.jsx";
 import { ListaUsuarios } from "./components/ListaUsuarios";
 import { ListaCartasAdmin } from "./components/ListaCartasAdmin.jsx";
 import { ListaCategorias } from "./components/ListaCategorias.jsx";
