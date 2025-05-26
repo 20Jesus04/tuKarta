@@ -9,12 +9,12 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [
     TypeOrmModule.forFeature([Usuario]),
     JwtModule.register({
-      secret: 'jwt_secret_key', // 🔐 idealmente en .env como process.env.JWT_SECRET
+      secret: 'jwt_secret_key',
       signOptions: { expiresIn: '1d' },
     }),
   ],
   providers: [AuthService],
   controllers: [AuthController],
-  exports: [AuthService], // ← necesario si lo usas en otros módulos
+  exports: [AuthService],
 })
 export class AuthModule {}

@@ -55,7 +55,7 @@ export class CartaController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cartaService.remove(+id);
+  async eliminarCarta(@Param('id') id: number) {
+    return this.cartaService.eliminarCarta(id);
   }
 }

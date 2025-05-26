@@ -22,8 +22,8 @@ export class CategoriaController {
   }
 
   @Get()
-  findAll() {
-    return this.categoriaService.findAll();
+  async obtenerCategorias() {
+    return this.categoriaService.obtenerTodas();
   }
 
   @Get(':id')
@@ -40,7 +40,7 @@ export class CategoriaController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoriaService.remove(+id);
+  async eliminarCategoria(@Param('id') id: number) {
+    return this.categoriaService.eliminarCategoria(id);
   }
 }

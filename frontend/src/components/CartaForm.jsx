@@ -200,11 +200,16 @@ export const CartaForm = ({ modo }) => {
                     step="0.01"
                     value={plato.precio}
                     onChange={(e) => {
-                      const nuevas = [...categorias];
-                      nuevas[catIndex].platos[platoIndex].precio = parseFloat(
-                        e.target.value
-                      );
-                      setCategorias(nuevas);
+                      const valor = e.target.value;
+
+                      const numero = parseFloat(valor.replace(",", "."));
+                      if (!isNaN(numero)) {
+                        const nuevas = [...categorias];
+                        nuevas[catIndex].platos[platoIndex].precio = parseFloat(
+                          e.target.value
+                        );
+                        setCategorias(nuevas);
+                      }
                     }}
                   />
                 </div>
@@ -250,6 +255,7 @@ export const CartaForm = ({ modo }) => {
         <ConfirmModal
           visible={mostrarModal}
           modo={modo}
+          texto={`¿Deseas ${modo} la carta con los datos actuales?`}
           onConfirm={
             modo === "Editar" ? actualizarCartaEnBackend : crearCartaEnBackend
           }

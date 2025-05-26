@@ -11,6 +11,7 @@ import { CategoriaModule } from './categoria/categoria.module';
 import { ImagenesCartaModule } from './imagenes-carta/imagenes-carta.module';
 import { PlatoModule } from './plato/plato.module';
 import { ValoracionModule } from './valoracion/valoracion.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { ValoracionModule } from './valoracion/valoracion.module';
       password: 'ljndVJdPsEipfLrJMCWueYkJCkfzGOOA',
       database: 'railway',
       autoLoadEntities: true, // detecta automáticamente las entidades
-      synchronize: false, // crea tablas automáticamente (solo para desarrollo)
+      synchronize: false,
     }),
     CartaModule,
     RestauranteModule,
@@ -35,6 +36,7 @@ import { ValoracionModule } from './valoracion/valoracion.module';
     ImagenesCartaModule,
     PlatoModule,
     ValoracionModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

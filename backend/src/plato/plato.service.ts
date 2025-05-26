@@ -36,6 +36,20 @@ export class PlatoService {
     return this.platoRepository.save(nuevoPlato);
   }
 
+  async obtenerTodos(): Promise<Plato[]> {
+    return this.platoRepository.find({
+      relations: [
+        'id_categoria',
+        'id_categoria.id_carta',
+        'id_categoria.id_carta.restaurante',
+      ],
+    });
+  }
+
+  async eliminarPlato(id: number): Promise<void> {
+    await this.platoRepository.delete(id);
+  }
+
   findAll() {
     return `This action returns all plato`;
   }
@@ -46,9 +60,5 @@ export class PlatoService {
 
   update(id: number, updatePlatoDto: UpdatePlatoDto) {
     return `This action updates a #${id} plato ${updatePlatoDto.nombre}`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} plato`;
   }
 }

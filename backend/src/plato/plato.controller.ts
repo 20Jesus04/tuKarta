@@ -22,8 +22,8 @@ export class PlatoController {
   }
 
   @Get()
-  findAll() {
-    return this.platoService.findAll();
+  async obtenerPlatos() {
+    return this.platoService.obtenerTodos();
   }
 
   @Get(':id')
@@ -37,7 +37,7 @@ export class PlatoController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.platoService.remove(+id);
+  async eliminarPlato(@Param('id') id: number) {
+    return this.platoService.eliminarPlato(id);
   }
 }

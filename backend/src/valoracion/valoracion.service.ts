@@ -100,7 +100,13 @@ export class ValoracionService {
     return `This action returns a #${id} valoracion`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} valoracion`;
+  async obtenerTodas(): Promise<Valoracion[]> {
+    return this.valoracionRepo.find({
+      relations: ['id_usuario', 'id_carta', 'id_carta.restaurante'],
+    });
+  }
+
+  async eliminarValoracion(id: number): Promise<void> {
+    await this.valoracionRepo.delete(id);
   }
 }

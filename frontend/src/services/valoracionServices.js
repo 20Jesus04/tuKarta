@@ -15,3 +15,9 @@ export const enviarValoracion = (data) => {
 export const getEstadisticasPorCarta = (idCarta) => {
   return API_VALORACION.get(`/estadisticas/${idCarta}`);
 };
+
+export const getValoraciones = () => {
+  return API_VALORACION.get("/");
+};
+
+export const eliminarValoracion = (id) => API_VALORACION.delete(`/${id}`);

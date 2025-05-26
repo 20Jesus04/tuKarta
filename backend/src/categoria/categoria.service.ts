@@ -47,7 +47,13 @@ export class CategoriaService {
     return `This action updates a #${id} categoria ${updateCategoriaDto.nombre}`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} categoria`;
+  async eliminarCategoria(id: number): Promise<void> {
+    await this.categoriaRepository.delete(id);
+  }
+
+  async obtenerTodas(): Promise<Categoria[]> {
+    return this.categoriaRepository.find({
+      relations: ['id_carta', 'id_carta.restaurante'],
+    });
   }
 }

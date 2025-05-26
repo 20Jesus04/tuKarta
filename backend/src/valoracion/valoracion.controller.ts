@@ -22,18 +22,18 @@ export class ValoracionController {
     return this.valoracionService.obtenerEstadisticasPorCarta(id);
   }
 
-  @Get()
-  findAll() {
-    return this.valoracionService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.valoracionService.findOne(+id);
   }
 
+  @Get()
+  async listarTodas() {
+    return this.valoracionService.obtenerTodas();
+  }
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.valoracionService.remove(+id);
+  async eliminar(@Param('id') id: number) {
+    return this.valoracionService.eliminarValoracion(id);
   }
 }

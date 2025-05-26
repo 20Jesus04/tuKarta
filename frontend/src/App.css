@@ -15,7 +15,15 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #000000;
+    background-color: #000;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255,140,0, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(255,165,0, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 30% 80%, rgba(255,120,0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(255,100,0, 0.25) 0%, transparent 50%);
+  background-repeat: no-repeat;
+  background-size: cover;
+ background-attachment: fixed;
   margin: 0;
   padding: 0;
   color: var(--texto-claro);
@@ -231,11 +239,6 @@ form p {
   z-index: 1000;
 }
 
-
-
-
-
-
 /* css provicional y rapido */
 
 .carta-form {
@@ -344,7 +347,7 @@ input[type="number"] {
   text-align: center;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .modal-botones {
@@ -380,7 +383,7 @@ input[type="number"] {
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Georgia', serif;
+  font-family: "Georgia", serif;
 }
 
 .titulo-restaurante {
@@ -551,7 +554,6 @@ input[type="number"] {
   }
 }
 
-
 .mensaje-info {
   background-color: #f0f8ff;
   border-left: 4px solid #cc9600;
@@ -585,7 +587,6 @@ input[type="number"] {
   vertical-align: middle;
 }
 
-
 .media-valoracion-caja {
   font-size: 1.1rem;
   font-weight: 500;
@@ -609,4 +610,109 @@ input[type="number"] {
   margin-bottom: 1rem;
   cursor: pointer;
   border-radius: 6px;
+}
+
+/* AdminDashboard */
+.admin-dashboard {
+  padding: 2rem;
+}
+
+.tarjetas-grid {
+  
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.tarjetaResumen {
+  background-color: var(--negro);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 1.2rem;
+  text-align: center;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.tarjetaResumen .cantidad {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+/* Lista de usuarios */
+.btnVolverDashboard {
+  background-color: orange;
+  color: black;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 20px;
+  transition: background-color 0.2s;
+}
+
+.btnVolverDashboard:hover {
+  background-color: darkorange;
+}
+
+
+.tituloUsuarios {
+  text-align: center;
+  color: var(--naranja);
+}
+
+.contenedorUsuarios {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1500px;
+}
+
+.usuarioCardCompact {
+  background-color: var(--negro);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  padding: 1.5rem;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.usuarioCardCompact:hover {
+  transform: scale(1.01);
+}
+
+.infoUsuario {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  column-gap: 30px;
+  row-gap: 6px;
+  flex-grow: 1;
+}
+
+.infoUsuario p {
+  margin: 0;
+}
+
+.btnEliminar {
+  background-color: #ff3333;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+  margin-top: 1em;
+}
+
+.btnEliminar:hover {
+  background-color: #cc0000;
 }

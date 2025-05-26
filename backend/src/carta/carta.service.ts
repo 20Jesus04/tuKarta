@@ -190,7 +190,7 @@ export class CartaService {
     return `This action returns a #${id} carta`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} carta`;
+  async eliminarCarta(id: number): Promise<void> {
+    await this.cartaRepository.delete(id);
   }
 }

@@ -8,6 +8,13 @@ import logo from "./assets/LOGO_TUKARTAsintitulo.png";
 import { getUsuarioActual } from "./utils/auth.js";
 import { CartaForm } from "./components/CartaForm.jsx";
 import { VistaContenidoCarta } from "./components/VistaContenidoCarta";
+import { AdminDashboard } from "./components/adminDashboard.jsx";
+import { ListaUsuarios } from "./components/ListaUsuarios";
+import { ListaCartasAdmin } from "./components/ListaCartasAdmin.jsx";
+import { ListaCategorias } from "./components/ListaCategorias.jsx";
+import { ListaPlatos } from "./components/ListaPlatos.jsx";
+import { ListaValoraciones } from "./components/ListaValoraciones.jsx";
+
 
 export const App = () => {
   const [terminoBusqueda, setTerminoBusqueda] = useState("");
@@ -70,6 +77,12 @@ export const App = () => {
           <Route path="/CrearCarta" element={<CartaForm modo="Crear" />} />
           <Route path="/EditarCarta" element={<CartaForm modo="Editar" />} />
           <Route path="/Carta/:id" element={<VistaContenidoCarta />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/usuarios" element={<ListaUsuarios />} />
+          <Route path="/admin/cartas" element={<ListaCartasAdmin />} />
+          <Route path="/admin/categorias" element={<ListaCategorias />} />
+          <Route path="/admin/platos" element={<ListaPlatos />} />
+          <Route path="/admin/valoraciones" element={<ListaValoraciones />} />
         </Routes>
       </Router>
     </>

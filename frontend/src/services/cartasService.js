@@ -63,3 +63,7 @@ export const crearCartaCompleta = async (
 export const actualizarCartaCompleta = (idCarta, datos) => {
   return API.put(`/carta/${idCarta}/completa`, datos);
 };
+
+export const eliminarCarta = (id) => {
+  return API.delete(`/carta/${id}`);
+};
