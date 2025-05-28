@@ -67,10 +67,12 @@ main {
   margin: 10px 0;
 }
 
-.cajaCarta img {
-  max-width: 100%;
+.cajaCarta img  {
+  width: 100%;
+  height: 200px; /* o la altura que quieras */
+  object-fit: cover;
   border-radius: 8px;
-  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .cajaCarta:hover {
@@ -236,7 +238,7 @@ form p {
   border: none;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  z-index: 1000;
+  z-index: 500;
 }
 
 /* css provicional y rapido */
@@ -715,4 +717,66 @@ input[type="number"] {
 
 .btnEliminar:hover {
   background-color: #cc0000;
+}
+
+/* SidebarMenu */
+
+.botonMenu {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.menuLateral {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #1e1e1e;
+  color: white;
+  padding: 20px;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+}
+
+.cerrarMenu {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  float: right;
+  cursor: pointer;
+}
+
+.listaMenu {
+  list-style: none;
+  padding: 20px 0;
+}
+
+.listaMenu li {
+  margin: 15px 0;
+}
+
+.listaMenu a,
+.listaMenu button {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Fondo oscuro detrás del menú */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }

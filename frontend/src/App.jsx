@@ -14,6 +14,7 @@ import { ListaCartasAdmin } from "./components/ListaCartasAdmin.jsx";
 import { ListaCategorias } from "./components/ListaCategorias.jsx";
 import { ListaPlatos } from "./components/ListaPlatos.jsx";
 import { ListaValoraciones } from "./components/ListaValoraciones.jsx";
+import { SidebarMenu } from "./components/SidebarMenu.jsx";
 
 
 export const App = () => {
@@ -21,7 +22,7 @@ export const App = () => {
   const usuario = getUsuarioActual();
 
   return (
-    
+
     <>
       <Router>
         <header className="appHeader">
@@ -56,16 +57,7 @@ export const App = () => {
               </>
             ) : (
               <>
-                {/* <span className="bienvenidaUsuario">Hola, {usuario.email}</span> */}
-                <button
-                  className="botonAuth"
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    window.location.href = "/";
-                  }}
-                >
-                  Cerrar Sesión
-                </button>
+                <SidebarMenu />
               </>
             )}
           </div>

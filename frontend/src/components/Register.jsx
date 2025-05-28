@@ -124,7 +124,7 @@ function Register() {
               onChange={handleRestauranteChange}
               required
             />
-            <input type="file" accept="image/*" onChange={handleImageChange} />
+            <input type="file" accept="image/*" onChange={handleImageChange} required />
           </>
         )}
         <button type="submit">Registrarse</button>

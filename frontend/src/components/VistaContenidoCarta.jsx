@@ -5,6 +5,7 @@ import { Valoraciones } from "./Valoraciones";
 import { getEstadisticasPorCarta } from "../services/valoracionServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { useRef } from "react";
 
 export const VistaContenidoCarta = () => {
   const { id } = useParams();
@@ -12,6 +13,12 @@ export const VistaContenidoCarta = () => {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [estadisticas, setEstadisticas] = useState(null);
+
+  const valoracionesRef = useRef(null);
+
+  const scrollToValoraciones = () => {
+    valoracionesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const cargarCarta = useCallback(() => {
     getCartaPorId(id)
@@ -47,7 +54,7 @@ export const VistaContenidoCarta = () => {
         <h3 className="subtitulo-carta">{carta.nombre}</h3>
 
         {estadisticas && estadisticas.total > 0 && (
-          <p className="media-valoracion">
+          <p className="media-valoracion" onClick={scrollToValoraciones} style={{ cursor: 'pointer' }}>
             <FontAwesomeIcon icon={faStar} className="estrella-icono" />
             {estadisticas.media.toFixed(1)} ({estadisticas.total})
           </p>
@@ -74,10 +81,13 @@ export const VistaContenidoCarta = () => {
           </div>
         ))}
       </div>
-      <Valoraciones
-        idCarta={carta.id}
-        onValoracionRealizada={cargarEstadisticas}
-      />
+      <div ref={valoracionesRef}>
+        <Valoraciones
+          idCarta={carta.id}
+          className="valorciones"
+          onValoracionRealizada={cargarEstadisticas}
+        />
+      </div>
     </>
   );
 };

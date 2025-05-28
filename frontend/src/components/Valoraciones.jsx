@@ -19,7 +19,7 @@ export const Valoraciones = ({ idCarta, onValoracionRealizada }) => {
     getValoracionesPorCarta(idCarta).then((res) => {
       setValoraciones(res.data);
 
-      if (user?.sub && user.rol === "USUARIO") {
+      if (user?.sub && user.rol === "USUARIO" || user.rol === "DUENO") {
         const yaExiste = res.data.some((v) => v.id_usuario?.id === user.sub);
         setYaValorado(yaExiste);
       }
@@ -74,7 +74,7 @@ export const Valoraciones = ({ idCarta, onValoracionRealizada }) => {
         </ul>
 
         {/* Solo podran valorar los que tengan el rol Usuarios */}
-        {user?.rol === "USUARIO" && !yaValorado && (
+        {user?.rol === "USUARIO" || user?.rol === "DUENO" && !yaValorado && (
           <form onSubmit={handleSubmit}>
             <h3>Deja tu valoración</h3>
             <label>
@@ -109,7 +109,7 @@ export const Valoraciones = ({ idCarta, onValoracionRealizada }) => {
           </form>
         )}
         {/* Mensaje si ya valoró */}
-        {user?.rol === "USUARIO" && yaValorado && (
+        {user?.rol === "USUARIO" || user?.rol === "DUENO" && yaValorado && (
           <p className="mensaje-info">
             Ya has valorado esta carta. ¡Gracias por tu opinión!
           </p>
