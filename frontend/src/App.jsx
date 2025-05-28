@@ -21,6 +21,7 @@ export const App = () => {
   const usuario = getUsuarioActual();
 
   return (
+    
     <>
       <Router>
         <header className="appHeader">
