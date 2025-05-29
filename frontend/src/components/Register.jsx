@@ -8,6 +8,7 @@ function Register() {
     nombre: "",
     email: "",
     password: "",
+    confirmPassword: "",
     rol: "USUARIO",
   });
 
@@ -16,9 +17,9 @@ function Register() {
     direccion: "",
     telefono: "",
   });
+  const [mostrarPassword, setMostrarPassword] = useState(false);
 
   const [imagen, setImagen] = useState(null);
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
@@ -28,17 +29,42 @@ function Register() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleRestauranteChange = (e) => {
+    const { name, value } = e.target;
+    setRestauranteData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageChange = (e) => {
+    setImagen(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
+    const { password, confirmPassword } = formData;
+
+    // Validación de seguridad de contraseña
+    const regexSegura = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!regexSegura.test(password)) {
+      setError(
+        "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número."
+      );
+      return;
+    }
+
+    // Validar confirmación de contraseña
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden.");
+      return;
+    }
+
     try {
-      // 1. Registrar el usuario
       const nuevoUsuario = await register(formData);
       console.log("ID del dueño enviado:", nuevoUsuario.id);
 
-      // 2. Si es DUENO, crear el restaurante
       if (formData.rol === "DUENO") {
         await crearRestauranteConImagen({
           nombre: restauranteData.nombre_restaurante,
@@ -58,81 +84,126 @@ function Register() {
       setError("No se pudo registrar. ¿El email ya está en uso?");
     }
   };
-  const handleRestauranteChange = (e) => {
-    const { name, value } = e.target;
-    setRestauranteData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleImageChange = (e) => {
-    setImagen(e.target.files[0]);
-  };
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <h2>Registro</h2>
-        <input
-          type="text"
-          name="nombre"
-          placeholder="Nombre"
-          onChange={handleChange}
-          required
-          maxLength={30}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          required
-          maxLength={50}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          onChange={handleChange}
-          required
-          maxLength={50}
-        />
-        <select name="rol" onChange={handleChange} required>
-          <option value="">--Seleccione como se quiere registrar--</option>
-          <option value="USUARIO">Como Usuario</option>
-          <option value="DUENO">Como Dueño</option>
-        </select>
-        {formData.rol === "DUENO" && (
-          <>
-            <h3>Información del Restaurante</h3>
-            <input
-              type="text"
-              name="nombre_restaurante"
-              placeholder="Nombre del restaurante"
-              onChange={handleRestauranteChange}
-              required
-            />
-            <input
-              type="text"
-              name="direccion"
-              placeholder="Dirección"
-              onChange={handleRestauranteChange}
-              required
-            />
-            <input
-              type="text"
-              name="telefono"
-              placeholder="Teléfono"
-              onChange={handleRestauranteChange}
-              required
-            />
-            <input type="file" accept="image/*" onChange={handleImageChange} required />
-          </>
-        )}
-        <button type="submit">Registrarse</button>
+    <form className="registerform" onSubmit={handleSubmit}>
+      <h2 className="form-title">Registro</h2>
 
-        {success && <p style={{ color: "green" }}>{success}</p>}
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </form>
-    </>
+      <input
+        className="form-input"
+        type="text"
+        name="nombre"
+        placeholder="Nombre"
+        onChange={handleChange}
+        required
+        maxLength={30}
+      />
+
+      <input
+        className="form-input"
+        type="email"
+        name="email"
+        placeholder="Email"
+        onChange={(e) =>
+          setFormData((prev) => ({
+            ...prev,
+            email: e.target.value.toLowerCase(),
+          }))
+        }
+        required
+        maxLength={50}
+      />
+
+      <input
+        className="form-input"
+        type={mostrarPassword ? "text" : "password"}
+        name="password"
+        placeholder="Contraseña"
+        onChange={handleChange}
+        required
+        maxLength={50}
+      />
+      <button
+        type="button"
+        onClick={() => setMostrarPassword((prev) => !prev)}
+        className="toggle-password"
+      >
+        {mostrarPassword ? "Ocultar" : "Mostrar"} contraseña
+      </button>
+
+      <p className="password-hint">
+        La contraseña debe tener al menos 8 caracteres, una mayúscula, una
+        minúscula y un número.
+      </p>
+
+      <input
+        className="form-input"
+        type="password"
+        name="confirmPassword"
+        placeholder="Confirmar contraseña"
+        onChange={handleChange}
+        required
+      />
+
+      <select
+        className="form-input"
+        name="rol"
+        onChange={handleChange}
+        required
+      >
+        <option value="">--Seleccione como se quiere registrar--</option>
+        <option value="USUARIO">Como Usuario</option>
+        <option value="DUENO">Como Dueño</option>
+      </select>
+
+      {formData.rol === "DUENO" && (
+        <>
+          <h3 className="form-subtitle">Información del Restaurante</h3>
+
+          <input
+            className="form-input"
+            type="text"
+            name="nombre_restaurante"
+            placeholder="Nombre del restaurante"
+            onChange={handleRestauranteChange}
+            required
+          />
+
+          <input
+            className="form-input"
+            type="text"
+            name="direccion"
+            placeholder="Dirección"
+            onChange={handleRestauranteChange}
+            required
+          />
+
+          <input
+            className="form-input"
+            type="text"
+            name="telefono"
+            placeholder="Teléfono"
+            onChange={handleRestauranteChange}
+            required
+          />
+
+          <input
+            className="form-input"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            required
+          />
+        </>
+      )}
+
+      <button className="form-button" type="submit">
+        Registrarse
+      </button>
+
+      {success && <p className="form-success">{success}</p>}
+      {error && <p className="form-error">{error}</p>}
+    </form>
   );
 }
 

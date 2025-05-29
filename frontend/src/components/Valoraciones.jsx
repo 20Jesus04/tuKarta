@@ -19,7 +19,7 @@ export const Valoraciones = ({ idCarta, onValoracionRealizada }) => {
     getValoracionesPorCarta(idCarta).then((res) => {
       setValoraciones(res.data);
 
-      if (user?.sub && user.rol === "USUARIO" || user.rol === "DUENO") {
+      if (user?.sub && (user?.rol === "USUARIO" || user?.rol === "DUENO")) {
         const yaExiste = res.data.some((v) => v.id_usuario?.id === user.sub);
         setYaValorado(yaExiste);
       }
@@ -74,12 +74,13 @@ export const Valoraciones = ({ idCarta, onValoracionRealizada }) => {
         </ul>
 
         {/* Solo podran valorar los que tengan el rol Usuarios */}
-        {user?.rol === "USUARIO" || user?.rol === "DUENO" && !yaValorado && (
-          <form onSubmit={handleSubmit}>
+        {(user?.rol === "USUARIO" || user?.rol === "DUENO") && !yaValorado && (
+          <form className="valoracion-formulario" onSubmit={handleSubmit}>
             <h3>Deja tu valoración</h3>
+
             <label>
               Puntuación:
-              <p className="clasificacion">
+              <div className="clasificacion">
                 {[5, 4, 3, 2, 1].map((value) => (
                   <React.Fragment key={value}>
                     <input
@@ -93,9 +94,9 @@ export const Valoraciones = ({ idCarta, onValoracionRealizada }) => {
                     <label htmlFor={`radio${value}`}>★</label>
                   </React.Fragment>
                 ))}
-              </p>
+              </div>
             </label>
-            <br />
+
             <label>
               Comentario:
               <textarea
@@ -104,12 +105,13 @@ export const Valoraciones = ({ idCarta, onValoracionRealizada }) => {
                 required
               />
             </label>
-            <br />
+
             <button type="submit">Enviar valoración</button>
           </form>
         )}
+
         {/* Mensaje si ya valoró */}
-        {user?.rol === "USUARIO" || user?.rol === "DUENO" && yaValorado && (
+        {(user?.rol === "USUARIO" || user?.rol === "DUENO") && yaValorado && (
           <p className="mensaje-info">
             Ya has valorado esta carta. ¡Gracias por tu opinión!
           </p>

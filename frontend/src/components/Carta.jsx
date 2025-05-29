@@ -19,39 +19,44 @@ export const Carta = ({ carta }) => {
 
   return (
     <>
-      <div className="cajaCarta"
-      onClick={() => navigate(`/carta/${carta.id}`)}>
-        {carta.restaurante?.imagen_url && (
-          <img
-            src={carta.restaurante.imagen_url}
-            alt={`Imagen del restaurante ${carta.restaurante.nombre}`}
-            className="imgRestaurante"
-          />
-        )}
-        {estadisticas && estadisticas.total > 0 && (
-        <p className="media-valoracion-caja">
+      <div className="cajaCarta" onClick={() => navigate(`/carta/${carta.id}`)}>
+  {carta.restaurante?.imagen_url && (
+    <img
+      src={carta.restaurante.imagen_url}
+      alt={`Imagen del restaurante ${carta.restaurante.nombre}`}
+      className="imgRestaurante"
+    />
+  )}
+
+  <div className="carta-contenido">
+    <div className="carta-encabezado">
+      <span className="nombre">{carta.restaurante?.nombre}</span>
+      {estadisticas && estadisticas.total > 0 && (
+        <span className="valoracion">
           <FontAwesomeIcon icon={faStar} className="estrella-icono" />
           {estadisticas.media.toFixed(1)} ({estadisticas.total})
-        </p>
-        )}
+        </span>
+      )}
+    </div>
 
-        <h3>{ carta.restaurante?.nombre}</h3>
-        <ul>
-          <li>
-            <strong>Fecha de creación:</strong> {fechaFormateada}
-          </li>
-          {carta.restaurante?.direccion && (
-            <li>
-              <strong>Dirección:</strong> {carta.restaurante.direccion}
-            </li>
-          )}
-          {carta.restaurante?.telefono && (
-            <li>
-              <strong>Teléfono:</strong> {carta.restaurante.telefono}
-            </li>
-          )}
-        </ul>
-      </div>
+    <div className="carta-datos">
+      <p>
+        <span>Fecha de creación:</span> {fechaFormateada}
+      </p>
+      {carta.restaurante?.direccion && (
+        <p>
+          <span>Dirección:</span> {carta.restaurante.direccion}
+        </p>
+      )}
+      {carta.restaurante?.telefono && (
+        <p>
+          <span>Teléfono:</span> {carta.restaurante.telefono}
+        </p>
+      )}
+    </div>
+  </div>
+</div>
+
     </>
   );
 };

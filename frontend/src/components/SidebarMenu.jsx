@@ -5,6 +5,8 @@ import { getCartaPorRestaurante } from "../services/cartasService";
 import { getUsuarioActual } from "../utils/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { eliminarCarta } from "../services/cartasService";
+import { ConfirmModal } from "./ConfirmModal"; // Si ya lo usas
 
 export const SidebarMenu = () => {
   const [abierto, setAbierto] = useState(false);
@@ -12,6 +14,8 @@ export const SidebarMenu = () => {
   const usuario = getUsuarioActual();
   const navigate = useNavigate();
   const [modoBoton, setModoBoton] = useState(null);
+  const [mostrarModalEliminar, setMostrarModalEliminar] = useState(false);
+  const [idCarta, setIdCarta] = useState(null);
 
   const cerrarSesion = () => {
     localStorage.removeItem("token");
@@ -21,24 +25,31 @@ export const SidebarMenu = () => {
   };
 
   useEffect(() => {
-    if (usuario?.rol === "DUENO") {
+    if (abierto && usuario?.rol === "DUENO") {
       getRestaurantePorDueno(usuario.sub)
         .then((res) => {
           const restauranteId = res.data.id;
-          return getCartaPorRestaurante(restauranteId);
-        })
-        .then((res) => {
-          if (res.data && res.data.id) {
-            setModoBoton("Editar");
-          } else {
-            setModoBoton("Crear");
-          }
+
+          getCartaPorRestaurante(restauranteId)
+            .then((res) => {
+              if (res.data && res.data.id) {
+                setModoBoton("Editar");
+                setIdCarta(res.data.id);
+              } else {
+                setModoBoton("Crear");
+                setIdCarta(null);
+              }
+            })
+            .catch(() => {
+              setModoBoton("Crear");
+              setIdCarta(null);
+            });
         })
         .catch(() => {
-          setModoBoton("Crear"); // Si no tiene carta o hay error
+          console.error("No se pudo obtener el restaurante del dueño");
         });
     }
-  }, []);
+  }, [abierto]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -104,14 +115,48 @@ export const SidebarMenu = () => {
                 </li>
               )}
 
+              {usuario?.rol === "DUENO" && idCarta && (
+                <>
+                  <li>
+                    <button
+                      className="botonEliminar"
+                      onClick={() => setMostrarModalEliminar(true)}
+                    >
+                      Eliminar carta
+                    </button>
+                  </li>
+                 
+                </>
+              )}
+
               <li>
                 <button className="botonAuth" onClick={cerrarSesion}>
                   Cerrar sesión
                 </button>
               </li>
             </ul>
+            <ConfirmModal
+                    visible={mostrarModalEliminar}
+                    modo="Eliminar"
+                    texto="¿Deseas eliminar tu carta?"
+                    onConfirm={() => {
+                      eliminarCarta(idCarta)
+                        .then(() => {
+                          setMostrarModalEliminar(false);
+                          setIdCarta(null);
+                          setModoBoton("Crear");
+                          window.location.reload(); // o navigate("/") para redirigir
+                        })
+                        .catch(() => {
+                          alert("Error al eliminar la carta");
+                        });
+                    }}
+                    onCancel={() => setMostrarModalEliminar(false)}
+                  />
           </div>
+           
         </div>
+        
       )}
     </>
   );
