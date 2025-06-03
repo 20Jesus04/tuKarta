@@ -10,6 +10,7 @@ export const register = async (data) => {
 export const login = async (data) => {
   const res = await axios.post(`${API_URL}/login`, data);
   localStorage.setItem("token", res.data.access_token);
+  localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
   return res.data.usuario;
 };
 
@@ -19,4 +20,9 @@ export const logout = () => {
 
 export const getToken = () => {
   return localStorage.getItem("token");
+};
+
+export const getUsuario = () => {
+  const usuario = localStorage.getItem("usuario");
+  return usuario ? JSON.parse(usuario) : null;
 };

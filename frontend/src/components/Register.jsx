@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { register } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { crearRestauranteConImagen } from "../services/restauranteService";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -114,22 +117,25 @@ function Register() {
         maxLength={50}
       />
 
-      <input
-        className="form-input"
-        type={mostrarPassword ? "text" : "password"}
-        name="password"
-        placeholder="Contraseña"
-        onChange={handleChange}
-        required
-        maxLength={50}
-      />
-      <button
-        type="button"
-        onClick={() => setMostrarPassword((prev) => !prev)}
-        className="toggle-password"
-      >
-        {mostrarPassword ? "Ocultar" : "Mostrar"} contraseña
-      </button>
+     <div className="input-password-group">
+  <input
+    className="form-input"
+    type={mostrarPassword ? "text" : "password"}
+    name="password"
+    placeholder="Contraseña"
+    onChange={handleChange}
+    required
+    maxLength={50}
+  />
+  <button
+    type="button"
+    onClick={() => setMostrarPassword((prev) => !prev)}
+    className="toggle-password"
+  >
+    <FontAwesomeIcon icon={mostrarPassword ? faEyeSlash : faEye} />
+  </button>
+</div>
+
 
       <p className="password-hint">
         La contraseña debe tener al menos 8 caracteres, una mayúscula, una

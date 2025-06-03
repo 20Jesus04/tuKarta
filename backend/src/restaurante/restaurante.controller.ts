@@ -11,12 +11,10 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
 import { RestauranteService } from './restaurante.service';
 import { CreateRestauranteDto } from './dto/create-restaurante.dto';
 import { UpdateRestauranteDto } from './dto/update-restaurante.dto';
-import { Express, Request } from 'express';
+import { Express } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { subirImagenDesdeBuffer } from 'src/common/cloudinary';
 
@@ -33,7 +31,7 @@ export class RestauranteController {
     console.log('BODY:', body);
     console.log('file:', file);
 
-    // ✅ Subida a Cloudinary
+    // Subida a Cloudinary
     let imageUrl = '';
     if (file) {
       imageUrl = await subirImagenDesdeBuffer(file.buffer);

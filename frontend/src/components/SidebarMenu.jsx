@@ -19,7 +19,7 @@ export const SidebarMenu = () => {
 
   const cerrarSesion = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("tokenUsuario");
+    localStorage.removeItem("usuario");
     navigate("/");
     window.location.reload(); // Para refrescar el estado global
   };
@@ -92,6 +92,12 @@ export const SidebarMenu = () => {
               <li>
                 <Link to="/" onClick={() => setAbierto(false)}>
                   Inicio
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/PerfilUsuario" onClick={() => setAbierto(false)}>
+                  Ver mi perfil
                 </Link>
               </li>
 

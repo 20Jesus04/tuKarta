@@ -15,6 +15,11 @@ import { ListaCategorias } from "./components/ListaCategorias.jsx";
 import { ListaPlatos } from "./components/ListaPlatos.jsx";
 import { ListaValoraciones } from "./components/ListaValoraciones.jsx";
 import { SidebarMenu } from "./components/SidebarMenu.jsx";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import VerPerfil from "./components/VerPerfil.jsx";
+import EditarPerfil from "./components/EditarPerfil.jsx";
+
 
 
 export const App = () => {
@@ -70,6 +75,8 @@ export const App = () => {
           <Route path="/CrearCarta" element={<CartaForm modo="Crear" />} />
           <Route path="/EditarCarta" element={<CartaForm modo="Editar" />} />
           <Route path="/Carta/:id" element={<VistaContenidoCarta />} />
+          <Route path="/PerfilUsuario" element={<VerPerfil />} />
+          <Route path="/EditarPerfil" element={<EditarPerfil usuario={usuario}/>} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/usuarios" element={<ListaUsuarios />} />
           <Route path="/admin/cartas" element={<ListaCartasAdmin />} />

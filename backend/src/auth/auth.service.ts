@@ -21,7 +21,7 @@ export class AuthService {
   ) {}
 
   async register(dto: CreateUsuarioDto) {
-    console.log('📦 Datos recibidos en registro:', dto);
+    console.log(' Datos recibidos en registro:', dto);
     const existe = await this.usuarioRepository.findOne({
       where: { email: dto.email },
     });

@@ -8,6 +8,8 @@ import {
 } from "../services/cartasService";
 import { ConfirmModal } from "./ConfirmModal";
 import { useNavigate } from "react-router-dom";
+import { GestorImagenesCarta } from "./GestorImagenesCarta";
+import { subir } from "../services/imagenesService";
 
 export const CartaForm = ({ modo }) => {
   const [nombreCarta, setNombreCarta] = useState("");
@@ -17,6 +19,8 @@ export const CartaForm = ({ modo }) => {
   const [idCarta, setIdCarta] = useState(null);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [procesando, setProcesando] = useState(false);
+  const [nuevasImagenes, setNuevasImagenes] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -95,7 +99,23 @@ export const CartaForm = ({ modo }) => {
     if (procesando) return;
     setProcesando(true);
     try {
-      await crearCartaCompleta(nombreCarta, idRestaurante, categorias);
+      const cartaCreada = await crearCartaCompleta(
+        nombreCarta,
+        idRestaurante,
+        categorias
+      );
+
+      const idCartaNuevo = cartaCreada.id;
+      setIdCarta(idCartaNuevo);
+
+      for (const img of nuevasImagenes) {
+        const formData = new FormData();
+        formData.append("imagen", img);
+        formData.append("idCarta", idCartaNuevo);
+        await subir(formData);
+      }
+
+      setNuevasImagenes([]);
       setMensaje("Carta creada correctamente");
       setNombreCarta("");
       setCategorias([]);
@@ -267,11 +287,44 @@ export const CartaForm = ({ modo }) => {
           >
             Añadir categoría
           </button>
+          {!idCarta && (
+            <div className="imagen-selector">
+              <label>Imágenes de la carta:</label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => {
+                  const files = Array.from(e.target.files);
+                  setNuevasImagenes([...nuevasImagenes, ...files]);
+                }}
+              />
+              {nuevasImagenes.length > 0 && (
+                <div className="preview-imagenes">
+                  {nuevasImagenes.map((img, index) => (
+                    <img
+                      key={index}
+                      src={URL.createObjectURL(img)}
+                      alt={`preview-${index}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           <button type="submit" className="btn-crear-carta">
             {modo} carta
           </button>
           {mensaje && <p className="mensaje-error">{mensaje}</p>}
         </form>
+
+        {idCarta && (
+          <div className="seccion-imagenes-carta">
+            <h3>Imágenes asociadas a la carta</h3>
+            <GestorImagenesCarta idCarta={idCarta} />
+          </div>
+        )}
 
         <ConfirmModal
           visible={mostrarModal}

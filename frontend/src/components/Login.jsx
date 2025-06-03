@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { login } from "../services/authService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [mostrarPassword, setMostrarPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Evita que se recargue la página
+    e.preventDefault();
     try {
       const user = await login({ email, password });
-      // console.log("Usuario logueado:", user);
 
       if (user.rol === "ADMIN") {
         navigate("/admin");
@@ -21,7 +23,6 @@ function Login() {
       }
       window.location.reload();
     } catch (err) {
-      // console.error("Error al hacer login:", err);
       setError("Credenciales incorrectas");
     }
   };
@@ -39,19 +40,33 @@ function Login() {
           required
         />
 
-        <input
-          className="form-input"
-          type="password"
-          placeholder="Contraseña"
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div className="input-password-group">
+          <input
+            className="form-input"
+            type={mostrarPassword ? "text" : "password"}
+            placeholder="Contraseña"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button
+            type="button"
+            className="toggle-password"
+            onClick={() => setMostrarPassword((prev) => !prev)}
+          >
+            <FontAwesomeIcon icon={mostrarPassword ? faEyeSlash : faEye} />
+          </button>
+        </div>
 
         <button className="form-button" type="submit">
           Entrar
         </button>
 
         {error && <p className="form-error">{error}</p>}
+
+        <p className="form-link-text">
+          ¿No tienes cuenta?{" "}
+          <Link to="/register" className="form-link">Regístrate aquí</Link>
+        </p>
       </form>
     </>
   );

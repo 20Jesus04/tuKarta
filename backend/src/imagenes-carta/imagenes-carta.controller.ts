@@ -12,11 +12,10 @@ import {
 } from '@nestjs/common';
 import { ImagenesCartaService } from './imagenes-carta.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
 import { CreateImagenesCartaDto } from './dto/create-imagenes-carta.dto';
 import { UpdateImagenesCartaDto } from './dto/update-imagenes-carta.dto';
 import { ConfigService } from '@nestjs/config';
+import { subirImagenDesdeBuffer } from 'src/common/cloudinary';
 
 @Controller('imagenes-carta')
 export class ImagenesCartaController {
@@ -26,17 +25,7 @@ export class ImagenesCartaController {
   ) {}
 
   @Post()
-  @UseInterceptors(
-    FileInterceptor('imagen', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-          const uniqueName = Date.now() + extname(file.originalname);
-          cb(null, uniqueName);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('imagen'))
   async create(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: CreateImagenesCartaDto,
@@ -45,8 +34,7 @@ export class ImagenesCartaController {
       throw new BadRequestException('La imagen es obligatoria');
     }
 
-    const host = this.configService.get<string>('HOST_URL');
-    const imageUrl = `${host}/uploads/${file.filename}`;
+    const imageUrl = await subirImagenDesdeBuffer(file.buffer);
 
     return this.imagenesCartaService.create(body, imageUrl);
   }
@@ -80,7 +68,12 @@ export class ImagenesCartaController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.imagenesCartaService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const idNumerico = parseInt(id, 10);
+    if (isNaN(idNumerico)) {
+      throw new BadRequestException('El ID debe ser un número válido');
+    }
+
+    return this.imagenesCartaService.remove(idNumerico);
   }
 }

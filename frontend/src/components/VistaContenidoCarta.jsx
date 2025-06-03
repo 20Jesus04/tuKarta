@@ -6,6 +6,8 @@ import { getEstadisticasPorCarta } from "../services/valoracionServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useRef } from "react";
+import { obtenerPorCarta } from "../services/imagenesService";
+import Slider from "react-slick";
 
 export const VistaContenidoCarta = () => {
   const { id } = useParams();
@@ -13,6 +15,7 @@ export const VistaContenidoCarta = () => {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [estadisticas, setEstadisticas] = useState(null);
+  const [imagenes, setImagenes] = useState([]);
 
   const valoracionesRef = useRef(null);
 
@@ -41,6 +44,14 @@ export const VistaContenidoCarta = () => {
   useEffect(() => {
     cargarCarta();
     cargarEstadisticas();
+
+      obtenerPorCarta(id)
+      .then((res) => {
+        setImagenes(res.data);
+      })
+      .catch((err) => {
+        console.error("Error al cargar imágenes:", err);
+      });
   }, [id]);
 
   if (cargando) return <p className="mensaje-cargando">Cargando carta...</p>;
@@ -54,7 +65,11 @@ export const VistaContenidoCarta = () => {
         <h3 className="subtitulo-carta">{carta.nombre}</h3>
 
         {estadisticas && estadisticas.total > 0 && (
-          <p className="media-valoracion" onClick={scrollToValoraciones} style={{ cursor: 'pointer' }}>
+          <p
+            className="media-valoracion"
+            onClick={scrollToValoraciones}
+            style={{ cursor: "pointer" }}
+          >
             <FontAwesomeIcon icon={faStar} className="estrella-icono" />
             {estadisticas.media.toFixed(1)} ({estadisticas.total})
           </p>
@@ -80,6 +95,43 @@ export const VistaContenidoCarta = () => {
             </ul>
           </div>
         ))}
+        {imagenes.length === 1 ? (
+          <>
+          <h2 className="nombre-categoria">Imagen de la carta</h2>
+          <div className="galeria-imagenes-carta">
+            <img
+              src={imagenes[0].url}
+              alt="Imagen carta"
+              className="imagen-carta"
+            />
+          </div>
+          </>
+          
+        ) : imagenes.length > 1 ? (
+          <>
+          <h2 className="nombre-categoria">Imagenes de la carta</h2>
+          <div className="galeria-imagenes-carta">
+            <Slider
+              dots={true}
+              infinite={false}
+              speed={500}
+              slidesToShow={1}
+              slidesToScroll={1}
+            >
+              {imagenes.map((img, i) => (
+                <div key={i}>
+                  <img
+                    src={img.url}
+                    alt={`Imagen carta ${i}`}
+                    className="imagen-carta"
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+          </>
+          
+        ) : null}
       </div>
       <div ref={valoracionesRef}>
         <Valoraciones

@@ -56,7 +56,19 @@ export class ImagenesCartaService {
     return `This action updates a #${id} imagenesCarta ${updateImagenesCartaDto.id_carta}`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} imagenesCarta`;
+  async remove(id: number): Promise<{ mensaje: string }> {
+    const imagen = await this.imagenRepository.findOne({
+      where: { id },
+    });
+
+    if (!imagen) {
+      throw new NotFoundException(`No se encontró ninguna imagen con ID ${id}`);
+    }
+
+    await this.imagenRepository.remove(imagen);
+
+    // Si además estás almacenando físicamente la imagen en disco o en un bucket, aquí podrías eliminarla también
+
+    return { mensaje: `Imagen con ID ${id} eliminada correctamente` };
   }
 }
