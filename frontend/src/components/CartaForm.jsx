@@ -10,6 +10,8 @@ import { ConfirmModal } from "./ConfirmModal";
 import { useNavigate } from "react-router-dom";
 import { GestorImagenesCarta } from "./GestorImagenesCarta";
 import { subir } from "../services/imagenesService";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 export const CartaForm = ({ modo }) => {
   const [nombreCarta, setNombreCarta] = useState("");
@@ -18,6 +20,7 @@ export const CartaForm = ({ modo }) => {
   const [idRestaurante, setIdRestaurante] = useState(null);
   const [idCarta, setIdCarta] = useState(null);
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [mostrarModalVolver, setMostrarModalVolver] = useState(false);
   const [procesando, setProcesando] = useState(false);
   const [nuevasImagenes, setNuevasImagenes] = useState([]);
 
@@ -151,8 +154,22 @@ export const CartaForm = ({ modo }) => {
     }
   };
 
+  const handleVolver = () => {
+    setMostrarModalVolver(true);
+  };
+
+  const confirmarVolver = () => {
+    navigate("/");
+  };
+
   return (
     <>
+      <div className="volver-wrapper">
+        <button className="boton-volver" onClick={handleVolver}>
+          <FontAwesomeIcon icon={faChevronLeft} /> Volver
+        </button>
+      </div>
+
       <div className="carta-form">
         <h2 className="form-title">{modo} carta</h2>
         <form
@@ -329,11 +346,23 @@ export const CartaForm = ({ modo }) => {
         <ConfirmModal
           visible={mostrarModal}
           modo={modo}
-          texto={`¿Deseas ${modo.toLowerCase()} la carta con los datos actuales?`}
+          texto={`¿Deseas ${modo.toLowerCase()} la carta con los datos actuales?${
+            modo === "Editar"
+              ? " Recuerda que si has añadido imágenes, debes subirlas manualmente."
+              : ""
+          }`}
           onConfirm={
             modo === "Editar" ? actualizarCartaEnBackend : crearCartaEnBackend
           }
           onCancel={() => setMostrarModal(false)}
+        />
+
+        <ConfirmModal
+          visible={mostrarModalVolver}
+          modo="volver"
+          texto="¿Estás seguro de que quieres volver? Perderás los cambios realizados y las imágenes que no se hayan subido."
+          onConfirm={confirmarVolver}
+          onCancel={() => setMostrarModalVolver(false)}
         />
       </div>
     </>

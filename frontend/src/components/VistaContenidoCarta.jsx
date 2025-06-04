@@ -8,6 +8,8 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useRef } from "react";
 import { obtenerPorCarta } from "../services/imagenesService";
 import Slider from "react-slick";
+import { useNavigate } from "react-router-dom";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 export const VistaContenidoCarta = () => {
   const { id } = useParams();
@@ -18,9 +20,18 @@ export const VistaContenidoCarta = () => {
   const [imagenes, setImagenes] = useState([]);
 
   const valoracionesRef = useRef(null);
+  const navigate = useNavigate();
 
   const scrollToValoraciones = () => {
     valoracionesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleVolver = () => {
+    if (window.history.length > 2) {
+      navigate(-1);
+    } else {
+      navigate("/"); // o cualquier página por defecto
+    }
   };
 
   const cargarCarta = useCallback(() => {
@@ -45,7 +56,7 @@ export const VistaContenidoCarta = () => {
     cargarCarta();
     cargarEstadisticas();
 
-      obtenerPorCarta(id)
+    obtenerPorCarta(id)
       .then((res) => {
         setImagenes(res.data);
       })
@@ -61,6 +72,10 @@ export const VistaContenidoCarta = () => {
   return (
     <>
       <div className="contenedor-carta">
+        <button className="boton-volver" onClick={handleVolver}>
+          <FontAwesomeIcon icon={faChevronLeft} /> Volver
+        </button>
+
         <h1 className="titulo-restaurante">{carta.restaurante?.nombre}</h1>
         <h3 className="subtitulo-carta">{carta.nombre}</h3>
 
@@ -97,40 +112,38 @@ export const VistaContenidoCarta = () => {
         ))}
         {imagenes.length === 1 ? (
           <>
-          <h2 className="nombre-categoria">Imagen de la carta</h2>
-          <div className="galeria-imagenes-carta">
-            <img
-              src={imagenes[0].url}
-              alt="Imagen carta"
-              className="imagen-carta"
-            />
-          </div>
+            <h2 className="nombre-categoria">Imagen de la carta</h2>
+            <div className="galeria-imagenes-carta">
+              <img
+                src={imagenes[0].url}
+                alt="Imagen carta"
+                className="imagen-carta"
+              />
+            </div>
           </>
-          
         ) : imagenes.length > 1 ? (
           <>
-          <h2 className="nombre-categoria">Imagenes de la carta</h2>
-          <div className="galeria-imagenes-carta">
-            <Slider
-              dots={true}
-              infinite={false}
-              speed={500}
-              slidesToShow={1}
-              slidesToScroll={1}
-            >
-              {imagenes.map((img, i) => (
-                <div key={i}>
-                  <img
-                    src={img.url}
-                    alt={`Imagen carta ${i}`}
-                    className="imagen-carta"
-                  />
-                </div>
-              ))}
-            </Slider>
-          </div>
+            <h2 className="nombre-categoria">Imagenes de la carta</h2>
+            <div className="galeria-imagenes-carta">
+              <Slider
+                dots={true}
+                infinite={false}
+                speed={500}
+                slidesToShow={1}
+                slidesToScroll={1}
+              >
+                {imagenes.map((img, i) => (
+                  <div key={i}>
+                    <img
+                      src={img.url}
+                      alt={`Imagen carta ${i}`}
+                      className="imagen-carta"
+                    />
+                  </div>
+                ))}
+              </Slider>
+            </div>
           </>
-          
         ) : null}
       </div>
       <div ref={valoracionesRef}>

@@ -12,6 +12,7 @@ import { ImagenesCartaModule } from './imagenes-carta/imagenes-carta.module';
 import { PlatoModule } from './plato/plato.module';
 import { ValoracionModule } from './valoracion/valoracion.module';
 import { AdminModule } from './admin/admin.module';
+import { FavoritoModule } from './favorito/favorito.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { AdminModule } from './admin/admin.module';
     PlatoModule,
     ValoracionModule,
     AdminModule,
+    FavoritoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

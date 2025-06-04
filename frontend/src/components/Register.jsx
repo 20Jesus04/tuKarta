@@ -3,8 +3,11 @@ import { register } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { crearRestauranteConImagen } from "../services/restauranteService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
+import {
+  faEye,
+  faEyeSlash,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -20,8 +23,8 @@ function Register() {
     direccion: "",
     telefono: "",
   });
-  const [mostrarPassword, setMostrarPassword] = useState(false);
 
+  const [mostrarPassword, setMostrarPassword] = useState(false);
   const [imagen, setImagen] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -47,8 +50,6 @@ function Register() {
     setSuccess("");
 
     const { password, confirmPassword } = formData;
-
-    // Validación de seguridad de contraseña
     const regexSegura = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
     if (!regexSegura.test(password)) {
@@ -58,7 +59,6 @@ function Register() {
       return;
     }
 
-    // Validar confirmación de contraseña
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden.");
       return;
@@ -66,8 +66,6 @@ function Register() {
 
     try {
       const nuevoUsuario = await register(formData);
-      console.log("ID del dueño enviado:", nuevoUsuario.id);
-
       if (formData.rol === "DUENO") {
         await crearRestauranteConImagen({
           nombre: restauranteData.nombre_restaurante,
@@ -89,127 +87,139 @@ function Register() {
   };
 
   return (
-    <form className="registerform" onSubmit={handleSubmit}>
-      <h2 className="form-title">Registro</h2>
+    <>
+      <div className="volver-wrapper">
+        <button className="boton-volver" onClick={() => navigate("/")}>
+          <FontAwesomeIcon icon={faChevronLeft} /> Volver al inicio
+        </button>
+      </div>
 
-      <input
-        className="form-input"
-        type="text"
-        name="nombre"
-        placeholder="Nombre"
-        onChange={handleChange}
-        required
-        maxLength={30}
-      />
+      <form className="registerform" onSubmit={handleSubmit}>
+        <h2 className="form-title">Registro</h2>
 
-      <input
-        className="form-input"
-        type="email"
-        name="email"
-        placeholder="Email"
-        onChange={(e) =>
-          setFormData((prev) => ({
-            ...prev,
-            email: e.target.value.toLowerCase(),
-          }))
-        }
-        required
-        maxLength={50}
-      />
+        <input
+          className="form-input"
+          type="text"
+          name="nombre"
+          placeholder="Nombre"
+          onChange={handleChange}
+          required
+          maxLength={30}
+        />
 
-     <div className="input-password-group">
-  <input
-    className="form-input"
-    type={mostrarPassword ? "text" : "password"}
-    name="password"
-    placeholder="Contraseña"
-    onChange={handleChange}
-    required
-    maxLength={50}
-  />
-  <button
-    type="button"
-    onClick={() => setMostrarPassword((prev) => !prev)}
-    className="toggle-password"
-  >
-    <FontAwesomeIcon icon={mostrarPassword ? faEyeSlash : faEye} />
-  </button>
-</div>
+        <input
+          className="form-input"
+          type="email"
+          name="email"
+          placeholder="Email"
+          onChange={(e) =>
+            setFormData((prev) => ({
+              ...prev,
+              email: e.target.value.toLowerCase(),
+            }))
+          }
+          required
+          maxLength={50}
+        />
 
-
-      <p className="password-hint">
-        La contraseña debe tener al menos 8 caracteres, una mayúscula, una
-        minúscula y un número.
-      </p>
-
-      <input
-        className="form-input"
-        type="password"
-        name="confirmPassword"
-        placeholder="Confirmar contraseña"
-        onChange={handleChange}
-        required
-      />
-
-      <select
-        className="form-input"
-        name="rol"
-        onChange={handleChange}
-        required
-      >
-        <option value="">--Seleccione como se quiere registrar--</option>
-        <option value="USUARIO">Como Usuario</option>
-        <option value="DUENO">Como Dueño</option>
-      </select>
-
-      {formData.rol === "DUENO" && (
-        <>
-          <h3 className="form-subtitle">Información del Restaurante</h3>
-
+        <div className="input-password-group">
           <input
             className="form-input"
-            type="text"
-            name="nombre_restaurante"
-            placeholder="Nombre del restaurante"
-            onChange={handleRestauranteChange}
+            type={mostrarPassword ? "text" : "password"}
+            name="password"
+            placeholder="Contraseña"
+            onChange={handleChange}
             required
+            maxLength={50}
           />
+          <button
+            type="button"
+            onClick={() => setMostrarPassword((prev) => !prev)}
+            className="toggle-password"
+          >
+            <FontAwesomeIcon icon={mostrarPassword ? faEyeSlash : faEye} />
+          </button>
+        </div>
 
-          <input
-            className="form-input"
-            type="text"
-            name="direccion"
-            placeholder="Dirección"
-            onChange={handleRestauranteChange}
-            required
-          />
+        <p className="password-hint">
+          La contraseña debe tener al menos 8 caracteres, una mayúscula, una
+          minúscula y un número.
+        </p>
 
-          <input
-            className="form-input"
-            type="text"
-            name="telefono"
-            placeholder="Teléfono"
-            onChange={handleRestauranteChange}
-            required
-          />
+        <input
+          className="form-input"
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirmar contraseña"
+          onChange={handleChange}
+          required
+        />
 
-          <input
-            className="form-input"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-          />
-        </>
-      )}
+        <select
+          className="form-input"
+          name="rol"
+          onChange={handleChange}
+          required
+        >
+          <option value="">--Seleccione cómo se quiere registrar--</option>
+          <option value="USUARIO">Como Usuario</option>
+          <option value="DUENO">Como Dueño</option>
+        </select>
 
-      <button className="form-button" type="submit">
-        Registrarse
-      </button>
+        {formData.rol === "DUENO" && (
+          <>
+            <h3 className="form-subtitle">Información del Restaurante</h3>
 
-      {success && <p className="form-success">{success}</p>}
-      {error && <p className="form-error">{error}</p>}
-    </form>
+            <input
+              className="form-input"
+              type="text"
+              name="nombre_restaurante"
+              placeholder="Nombre del restaurante"
+              onChange={handleRestauranteChange}
+              required
+              maxLength={50}
+            />
+
+            <input
+              className="form-input"
+              type="text"
+              name="direccion"
+              placeholder="Dirección"
+              onChange={handleRestauranteChange}
+              required
+              maxLength={100}
+            />
+
+            <input
+              className="form-input"
+              type="text"
+              name="telefono"
+              placeholder="Teléfono"
+              onChange={handleRestauranteChange}
+              required
+              maxLength={15}
+              pattern="^[0-9]{9,15}$"
+              title="Introduce un número de teléfono válido (solo dígitos, entre 9 y 15)"
+            />
+
+            <input
+              className="form-input"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              required
+            />
+          </>
+        )}
+
+        <button className="form-button" type="submit">
+          Registrarse
+        </button>
+
+        {success && <p className="form-success">{success}</p>}
+        {error && <p className="form-error">{error}</p>}
+      </form>
+    </>
   );
 }
 

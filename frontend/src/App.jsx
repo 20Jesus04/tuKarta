@@ -19,15 +19,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import VerPerfil from "./components/VerPerfil.jsx";
 import EditarPerfil from "./components/EditarPerfil.jsx";
-
-
+import { VistaFavoritos } from "./components/VistaFavoritos.jsx";
 
 export const App = () => {
   const [terminoBusqueda, setTerminoBusqueda] = useState("");
   const usuario = getUsuarioActual();
 
   return (
-
     <>
       <Router>
         <header className="appHeader">
@@ -39,15 +37,26 @@ export const App = () => {
           </Link>
 
           <div className="buscadorSeccion">
-            <Link to="/">
-            <input
-              type="text"
-              className="barraBusqueda"
-              placeholder="Buscar cartas"
-              value={terminoBusqueda}
-              onChange={(e) => setTerminoBusqueda(e.target.value)}
-            />
-            </Link>
+            <div className="input-contenedor">
+              <Link to="/">
+              <input
+                type="text"
+                className="barraBusqueda"
+                placeholder="Buscar cartas"
+                value={terminoBusqueda}
+                onChange={(e) => setTerminoBusqueda(e.target.value)}
+              />
+              </Link>
+              {terminoBusqueda && (
+                <button
+                  type="button"
+                  className="boton-clear"
+                  onClick={() => setTerminoBusqueda("")}
+                >
+                  &times;
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="authSeccion">
@@ -69,20 +78,27 @@ export const App = () => {
         </header>
 
         <Routes>
-          <Route path="/" element={<Home terminoBusqueda={terminoBusqueda}/>} />
+          <Route
+            path="/"
+            element={<Home terminoBusqueda={terminoBusqueda} />}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/CrearCarta" element={<CartaForm modo="Crear" />} />
           <Route path="/EditarCarta" element={<CartaForm modo="Editar" />} />
           <Route path="/Carta/:id" element={<VistaContenidoCarta />} />
           <Route path="/PerfilUsuario" element={<VerPerfil />} />
-          <Route path="/EditarPerfil" element={<EditarPerfil usuario={usuario}/>} />
+          <Route
+            path="/EditarPerfil"
+            element={<EditarPerfil usuario={usuario} />}
+          />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/usuarios" element={<ListaUsuarios />} />
           <Route path="/admin/cartas" element={<ListaCartasAdmin />} />
           <Route path="/admin/categorias" element={<ListaCategorias />} />
           <Route path="/admin/platos" element={<ListaPlatos />} />
           <Route path="/admin/valoraciones" element={<ListaValoraciones />} />
+          <Route path="/favoritos" element={<VistaFavoritos />} />
         </Routes>
       </Router>
     </>

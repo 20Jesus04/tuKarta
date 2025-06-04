@@ -15,15 +15,30 @@
 
 body {
   font-family: Arial, sans-serif;
-    background-color: #000;
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(255,140,0, 0.2) 0%, transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(255,165,0, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 30% 80%, rgba(255,120,0, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 70% 70%, rgba(255,100,0, 0.25) 0%, transparent 50%);
+  background-color: #000;
+  background-image: radial-gradient(
+      circle at 10% 20%,
+      rgba(255, 140, 0, 0.2) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(255, 165, 0, 0.15) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 30% 80%,
+      rgba(255, 120, 0, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 70% 70%,
+      rgba(255, 100, 0, 0.25) 0%,
+      transparent 50%
+    );
   background-repeat: no-repeat;
   background-size: cover;
- background-attachment: fixed;
+  background-attachment: fixed;
   margin: 0;
   padding: 0;
   color: var(--texto-claro);
@@ -54,6 +69,28 @@ main {
   width: 100%;
   transition: all 0.3s ease;
   cursor: pointer;
+}
+.cajaCarta {
+  position: relative; /* Para posicionar el botón dentro */
+}
+
+.boton-favorito {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+.boton-favorito button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.2s ease;
+}
+
+.boton-favorito button:hover {
+  transform: scale(1.1);
 }
 
 .cajaCarta:hover {
@@ -91,6 +128,9 @@ main {
   font-size: 1.4rem;
   font-weight: bold;
   color: var(--naranja);
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .valoracion {
@@ -109,6 +149,9 @@ main {
   margin: 0.3rem 0;
   font-size: 0.95rem;
   color: #ccc;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .carta-datos p span {
@@ -116,59 +159,153 @@ main {
   color: #fff;
 }
 
+/* Diseño responsive */
+@media (max-width: 600px) {
+  .cajaCarta {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 
+  .imgRestaurante {
+    width: 100%;
+    height: auto; /* Altura automática para mantener proporciones */
+    max-height: 250px; /* Opcional: límite máximo */
+  }
+
+  .carta-contenido {
+    width: 100%;
+    align-items: center;
+  }
+
+  .carta-datos p {
+    text-align: center;
+  }
+
+  .carta-encabezado {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .boton-favorito {
+    bottom: 15px;
+    right: 15px;
+  }
+}
 
 /* APP INFO */
+/* Cabecera general */
 .appHeader {
-  background-color: #1e1e1e;
-  padding: 1rem 1rem;
-  display: flex;
+  background: linear-gradient(90deg, #1e1e1e 0%, #262626 100%);
+  padding: 1rem 2rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 3px 8px rgba(255, 149, 0, 0.2);
-  gap: 7px;
+  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+  font-family: "Segoe UI", sans-serif;
+  gap: 2rem;
 }
 
-a {
-  text-decoration: none;
-}
+/* Sección izquierda: logo + auth */
 .logoSeccion {
   display: flex;
   align-items: center;
-  gap: 0px;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .logo {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   object-fit: contain;
 }
 
 .nombreApp {
   color: var(--naranja);
   font-size: 1.8rem;
-  font-weight: 600;
+  font-weight: 700;
+  margin-right: 1.5rem;
 }
 
+.authSeccion {
+  width: 170px;
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.botonAuth {
+  padding: 0.45rem 1rem;
+  background-color: var(--naranja);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.botonAuth:hover {
+  background: white;
+  color: var(--naranja);
+}
+
+/* Sección central: buscador */
 .buscadorSeccion {
-  flex-grow: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+}
+.input-contenedor {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
 }
 
 .barraBusqueda {
-  padding: 10px 15px;
-  border-radius: 50px;
+  width: 100%;
+  padding: 0.6rem 2.5rem 0.6rem 1.2rem; /* espacio para la "X" */
+  border-radius: 999px;
   border: none;
   font-size: 1rem;
   background-color: #fff;
   color: #333;
-  box-shadow: 0 0 5px rgba(248, 100, 1, 0.1);
-  width: 100%;
-  max-width: 400px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.boton-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  font-size: xx-large;
+}
+
+.boton-clear:hover {
+  color: #333;
+}
+
+.barraBusqueda:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .mensajeSinResultados {
@@ -180,14 +317,37 @@ a {
   margin-top: 1rem;
 }
 
-/* login y register */
+/* Responsive */
+@media (max-width: 768px) {
+  .appHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
 
-.authSeccion {
-  display: flex;
-  gap: 10px;
+  .logoSeccion {
+    justify-content: center;
+  }
+
+  .authSeccion {
+    width: auto;
+    justify-content: center;
+  }
+
+  .buscadorSeccion {
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .barraBusqueda {
+    max-width: 100%;
+  }
 }
 
-.botonAuth {
+/* login y register */
+
+/* .botonAuth {
   background: white;
   color: var(--naranja);
   border: 2px solid var(--naranja);
@@ -197,12 +357,10 @@ a {
   transition: 0.2s ease;
 }
 
-
-
 .botonAuth:hover {
   background-color: var(--naranja);
   color: white;
-}
+}  */
 
 .botonEliminar {
   background: white;
@@ -219,7 +377,6 @@ a {
   color: white;
 }
 
-
 /* FORMULARIOS LOGIN Y REGISTRO */
 
 form.loginform,
@@ -227,6 +384,7 @@ form.registerform {
   background-color: #1c1c1c;
   padding: 30px;
   margin: 40px auto;
+  margin-top: 0;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(255, 102, 0, 0.4);
   color: #fff;
@@ -276,7 +434,6 @@ form.registerform {
   border: 1px solid #ff6600;
 }
 
-
 form select.form-input option {
   background-color: #1c1c1c;
   color: #fff;
@@ -292,7 +449,7 @@ form select.form-input option {
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
-  transition:  0.3s;
+  transition: 0.3s;
   width: 100%;
   margin-top: 10px;
 }
@@ -316,7 +473,6 @@ form select.form-input option {
   font-weight: bold;
 }
 
-
 .password-hint {
   font-size: 0.9rem;
   color: #cccccc;
@@ -324,15 +480,13 @@ form select.form-input option {
   margin-bottom: 15px;
 }
 
-
 .input-password-group {
   position: relative;
 }
 
-
 .input-password-group input {
   width: 100%;
-  padding-right: 40px; 
+  padding-right: 40px;
 }
 
 .toggle-password {
@@ -368,7 +522,6 @@ form select.form-input option {
   text-decoration: underline;
 }
 
-
 /* BOTON CREAR CARTA */
 
 .btnCrearCarta {
@@ -395,6 +548,7 @@ form select.form-input option {
   border-radius: 12px;
   max-width: 800px;
   margin: 2rem auto;
+  margin-top: 0;
   box-shadow: 0 0 15px rgba(255, 102, 0, 0.4);
   color: #fff;
   font-family: "Segoe UI", sans-serif;
@@ -485,7 +639,6 @@ form select.form-input option {
   margin-right: auto;
 }
 
-
 .seccion-imagenes-carta h3 {
   color: #ff6600;
   margin-bottom: 1rem;
@@ -517,7 +670,7 @@ form select.form-input option {
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  transition:  0.3s;
+  transition: 0.3s;
 }
 
 .btn-subir:hover {
@@ -531,8 +684,6 @@ form select.form-input option {
 .btn-eliminar-imagen:hover {
   background-color: #e63946;
 }
-
-
 
 /* Botones diferenciados */
 .btn-agregar-categoria,
@@ -566,7 +717,7 @@ form select.form-input option {
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  transition:  0.3s;
+  transition: 0.3s;
 }
 
 .btn-agregar-categoria:hover,
@@ -619,7 +770,7 @@ form select.form-input option {
   margin-top: 20px;
   display: flex;
   justify-content: space-around;
-  z-index: 10000
+  z-index: 10000;
 }
 
 .btn-confirmar {
@@ -629,7 +780,6 @@ form select.form-input option {
   padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
-  
 }
 
 .btn-cancelar {
@@ -639,7 +789,6 @@ form select.form-input option {
   padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
-  
 }
 
 /* Vista de carta */
@@ -659,8 +808,6 @@ form select.form-input option {
   max-width: 600px;
   margin: 0 auto 2rem auto;
 }
-
-
 
 .contenedor-carta {
   max-width: 800px;
@@ -717,12 +864,11 @@ form select.form-input option {
 .plato-descripcion,
 .plato-nombre,
 .valoracion-comentario {
-  word-wrap: break-word;        /* Rompe palabras largas */
-  overflow-wrap: break-word;    /* Soporte moderno */
-  white-space: pre-line;        /* Permite saltos de línea y ajusta */
+  word-wrap: break-word; /* Rompe palabras largas */
+  overflow-wrap: break-word; /* Soporte moderno */
+  white-space: pre-line; /* Permite saltos de línea y ajusta */
   line-height: 1.5;
 }
-
 
 .plato-info {
   display: flex;
@@ -978,7 +1124,6 @@ form select.form-input option {
 }
 
 .tarjetas-grid {
-  
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1rem;
@@ -1017,10 +1162,12 @@ form select.form-input option {
   background-color: darkorange;
 }
 
-
 .tituloUsuarios {
   text-align: center;
   color: var(--naranja);
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .contenedorUsuarios {
@@ -1055,6 +1202,9 @@ form select.form-input option {
   column-gap: 30px;
   row-gap: 6px;
   flex-grow: 1;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .infoUsuario p {
@@ -1139,8 +1289,6 @@ form select.form-input option {
   z-index: 999;
 }
 
-
-
 /* VerPerfil */
 
 .perfil-container {
@@ -1150,6 +1298,7 @@ form select.form-input option {
   padding: 2rem;
   max-width: 500px;
   margin: 3rem auto;
+  margin-top: 0;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
   color: #fff;
   text-align: left;
@@ -1181,14 +1330,13 @@ form select.form-input option {
   border-radius: 8px;
   margin-top: 1rem;
   cursor: pointer;
-  transition:  0.3s;
+  transition: 0.3s;
   width: 100%;
 }
 
 .btn-editar-perfil:hover {
   background-color: #e65c00;
 }
-
 
 /* folmuracio de edicion del perfil */
 
@@ -1240,7 +1388,7 @@ form select.form-input option {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition:  0.3s;
+  transition: 0.3s;
 }
 
 .form-button:hover {
@@ -1266,7 +1414,6 @@ form select.form-input option {
   margin-bottom: 1rem;
 }
 
-
 .input-password-wrapper {
   position: relative;
 }
@@ -1287,4 +1434,169 @@ form select.form-input option {
 .btn-ver-password:hover {
   background-color: #ff6600;
   color: #1c1c1c;
+}
+
+/* Filtro de ordenamiento */
+.filtroCaja {
+  background-color: var(--gris-oscuro);
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.filtroCaja select {
+  margin-left: 0.5rem;
+  padding: 0.4rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #000;
+}
+
+.btnFiltro {
+  background-color: var(--naranja); /* Color principal */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 1rem auto;
+  display: block;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(255, 102, 0, 0.3);
+}
+
+.btnFiltro:hover {
+  background-color: #ff7f2a;
+  transform: translateY(-2px);
+}
+
+/* Loader personalizado */
+
+.loader {
+  display: block;
+  margin: 2rem auto;
+}
+.loader {
+  width: 200px;
+  height: 140px;
+  background: #979794;
+  box-sizing: border-box;
+  position: relative;
+  border-radius: 8px;
+  perspective: 1000px;
+  margin: 2rem auto;
+}
+
+.loader:before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 10px;
+  bottom: 10px;
+  border-radius: 8px;
+  background: #f5f5f5 no-repeat;
+  background-size: 60px 10px;
+  background-image: linear-gradient(#ddd 100px, transparent 0),
+    linear-gradient(#ddd 100px, transparent 0),
+    linear-gradient(#ddd 100px, transparent 0),
+    linear-gradient(#ddd 100px, transparent 0),
+    linear-gradient(#ddd 100px, transparent 0),
+    linear-gradient(#ddd 100px, transparent 0);
+  background-position: 15px 30px, 15px 60px, 15px 90px, 105px 30px, 105px 60px,
+    105px 90px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+.loader:after {
+  content: "";
+  position: absolute;
+  width: calc(50% - 10px);
+  right: 10px;
+  top: 10px;
+  bottom: 10px;
+  border-radius: 8px;
+  background: #fff no-repeat;
+  background-size: 60px 10px;
+  background-image: linear-gradient(#ddd 100px, transparent 0),
+    linear-gradient(#ddd 100px, transparent 0),
+    linear-gradient(#ddd 100px, transparent 0);
+  background-position: 50% 30px, 50% 60px, 50% 90px;
+  transform: rotateY(0deg);
+  transform-origin: left center;
+  animation: paging 1s linear infinite;
+}
+
+@keyframes paging {
+  to {
+    transform: rotateY(-180deg);
+  }
+}
+
+/* Mensaje sin resultados */
+.mensajeSinResultados {
+  text-align: center;
+  margin-top: 2rem;
+  color: #ccc;
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+/* boton volver */
+
+.boton-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  border: none;
+  color: var(--naranja);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  padding: 0.3rem 0.6rem;
+  transition: all 0.2s ease;
+}
+
+.boton-volver:hover {
+  color: #ff6600; /* un naranja más claro o fuerte */
+  text-decoration: underline;
+  transform: translateX(-2px);
+}
+.volver-wrapper {
+  margin: 1rem 0 0 1rem;
+}
+
+.vista-favoritos {
+  padding: 1.5rem;
+}
+
+.titulo-favoritos {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 1rem auto;
+  margin-top: 0;
+  color: var(--naranja);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.icono-corazon {
+  color: red;
+  font-size: 1.4rem;
 }

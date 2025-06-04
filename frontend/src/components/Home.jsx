@@ -21,7 +21,6 @@ export const Home = ({ terminoBusqueda }) => {
 
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const usuario = getUsuarioActual();
 
@@ -50,34 +49,33 @@ export const Home = ({ terminoBusqueda }) => {
   }, []);
 
   useEffect(() => {
-  const cartasBuscadas = async () => {
-    try {
-      setCargando(true);
+    const cartasBuscadas = async () => {
+      try {
+        setCargando(true);
 
-      let res;
-      const hayBusqueda = terminoBusqueda?.trim();
-      const hayFiltros = !!orden;
+        let res;
+        const hayBusqueda = terminoBusqueda?.trim();
+        const hayFiltros = !!orden;
 
+        if (hayBusqueda || hayFiltros) {
+          res = await buscarCartas(terminoBusqueda, orden);
+        } else {
+          res = await getCartas();
+        }
 
-      if (hayBusqueda || hayFiltros) {
-        res = await buscarCartas(terminoBusqueda, orden);
-      } else {
-        res = await getCartas();
+        const cartasRecibidas = Array.isArray(res.data) ? res.data : [];
+        setCartas(cartasRecibidas);
+        setError(null);
+      } catch (err) {
+        console.error("Error al buscar cartas:", err);
+        setError("No se pudieron cargar las cartas");
+      } finally {
+        setCargando(false);
       }
+    };
 
-      const cartasRecibidas = Array.isArray(res.data) ? res.data : [];
-      setCartas(cartasRecibidas);
-      setError(null);
-    } catch (err) {
-      console.error("Error al buscar cartas:", err);
-      setError("No se pudieron cargar las cartas");
-    } finally {
-      setCargando(false);
-    }
-  };
-
-  cartasBuscadas();
-}, [terminoBusqueda, orden]);
+    cartasBuscadas();
+  }, [terminoBusqueda, orden]);
 
   return (
     <>
@@ -86,6 +84,7 @@ export const Home = ({ terminoBusqueda }) => {
           className="btnFiltro"
           onClick={() => setMostrarFiltros(!mostrarFiltros)}
         >
+          <i className="fa-solid fa-sliders" style={{ marginRight: "8px" }}></i>
           {mostrarFiltros ? "Ocultar filtros" : "Filtrar"}
         </button>
 
@@ -99,13 +98,12 @@ export const Home = ({ terminoBusqueda }) => {
                 <option value="reciente">Más recientes</option>
                 <option value="precio">Más baratos</option>
                 <option value="precio_desc">Más caros</option>
-
               </select>
             </label>
           </div>
         )}
 
-        {cargando && <p>Cargando cartas...</p>}
+        {cargando && <span className="loader"></span>}
         {error && <p style={{ color: "red" }}>{error}</p>}
         {!cargando &&
           !error &&

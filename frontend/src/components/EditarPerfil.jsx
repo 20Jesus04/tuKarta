@@ -4,7 +4,11 @@ import { updateUsuario } from "../services/usuariosService";
 import { getUsuario, getToken } from "../services/authService";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEye,
+  faEyeSlash,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
 
 const EditarPerfil = () => {
   const usuarioActual = getUsuario();
@@ -22,6 +26,8 @@ const EditarPerfil = () => {
   const [verPasswordAntigua, setVerPasswordAntigua] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [mostrarModalVolver, setMostrarModalVolver] = useState(false);
+  const [hayCambios, setHayCambios] = useState(false);
   const [datosParaActualizar, setDatosParaActualizar] = useState({});
   const [tipoMensaje, setTipoMensaje] = useState("");
 
@@ -37,17 +43,28 @@ const EditarPerfil = () => {
       setForm((prev) => ({
         ...prev,
         nombre: usuarioActual.nombre,
-        email: usuarioActual.email,
+        email: usuarioActual.email.toLowerCase(),
       }));
     }
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
+
+    const nuevoForm = {
+      ...form,
       [name]: name === "email" ? value.toLowerCase() : value,
-    }));
+    };
+
+    setForm(nuevoForm);
+
+    const haCambiado =
+      nuevoForm.nombre !== usuarioActual.nombre ||
+      nuevoForm.email !== usuarioActual.email.toLowerCase() ||
+      nuevoForm.password ||
+      nuevoForm.passwordAntigua;
+
+    setHayCambios(haCambiado);
   };
 
   const handleSubmit = (e) => {
@@ -73,7 +90,9 @@ const EditarPerfil = () => {
 
     const datos = {
       ...(form.nombre !== usuarioActual.nombre && { nombre: form.nombre }),
-      ...(form.email !== usuarioActual.email && { email: form.email }),
+      ...(form.email !== usuarioActual.email.toLowerCase() && {
+        email: form.email,
+      }),
       ...(form.password && {
         passwordAntigua: form.passwordAntigua,
         password: form.password,
@@ -110,8 +129,26 @@ const EditarPerfil = () => {
     }
   };
 
+  const handleVolver = () => {
+    if (hayCambios) {
+      setMostrarModalVolver(true);
+    } else {
+      navigate("/PerfilUsuario");
+    }
+  };
+
+  const confirmarVolver = () => {
+    setMostrarModalVolver(false);
+    navigate("/PerfilUsuario");
+  };
+
   return (
     <>
+      <div className="volver-wrapper">
+        <button className="boton-volver" onClick={handleVolver}>
+          <FontAwesomeIcon icon={faChevronLeft} /> Volver
+        </button>
+      </div>
       <form className="perfil-formulario" onSubmit={handleSubmit}>
         <h2 className="form-title">Editar Perfil</h2>
         <p className="form-description">
@@ -206,6 +243,14 @@ const EditarPerfil = () => {
         visible={mostrarModal}
         onConfirm={confirmarActualizacion}
         onCancel={() => setMostrarModal(false)}
+      />
+
+      <ConfirmModal
+        texto="Tienes cambios sin guardar. ¿Estás seguro de que quieres volver? Perderás los cambios realizados."
+        modo="volver"
+        visible={mostrarModalVolver}
+        onConfirm={confirmarVolver}
+        onCancel={() => setMostrarModalVolver(false)}
       />
     </>
   );

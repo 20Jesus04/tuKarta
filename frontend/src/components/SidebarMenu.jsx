@@ -6,7 +6,8 @@ import { getUsuarioActual } from "../utils/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { eliminarCarta } from "../services/cartasService";
-import { ConfirmModal } from "./ConfirmModal"; // Si ya lo usas
+import { ConfirmModal } from "./ConfirmModal";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 export const SidebarMenu = () => {
   const [abierto, setAbierto] = useState(false);
@@ -112,11 +113,11 @@ export const SidebarMenu = () => {
               {usuario?.rol === "DUENO" && modoBoton && (
                 <li>
                   <button className="botonAuth" onClick={manejarAccionCarta}>
+                    {modoBoton === "Editar" ? "Editar Carta" : "Crear Carta"}
                     <FontAwesomeIcon
                       icon={modoBoton === "Editar" ? faPenToSquare : faPlus}
-                      style={{ marginRight: "8px" }}
+                      style={{ marginLeft: "8px" }}
                     />
-                    {modoBoton === "Editar" ? "Editar Carta" : "Crear Carta"}
                   </button>
                 </li>
               )}
@@ -131,10 +132,21 @@ export const SidebarMenu = () => {
                       Eliminar carta
                     </button>
                   </li>
-                 
                 </>
               )}
-
+              {usuario?.rol === "USUARIO" && (
+                <Link
+                  to="/favoritos"
+                  onClick={() => setAbierto(false)}
+                  className="botonAuth"
+                >
+                  Mis favoritos
+                  <FontAwesomeIcon
+                    icon={faHeart}
+                    style={{ marginLeft: "8px", color: "red" }}
+                  />
+                </Link>
+              )}
               <li>
                 <button className="botonAuth" onClick={cerrarSesion}>
                   Cerrar sesión
@@ -142,27 +154,25 @@ export const SidebarMenu = () => {
               </li>
             </ul>
             <ConfirmModal
-                    visible={mostrarModalEliminar}
-                    modo="Eliminar"
-                    texto="¿Deseas eliminar tu carta?"
-                    onConfirm={() => {
-                      eliminarCarta(idCarta)
-                        .then(() => {
-                          setMostrarModalEliminar(false);
-                          setIdCarta(null);
-                          setModoBoton("Crear");
-                          window.location.reload(); // o navigate("/") para redirigir
-                        })
-                        .catch(() => {
-                          alert("Error al eliminar la carta");
-                        });
-                    }}
-                    onCancel={() => setMostrarModalEliminar(false)}
-                  />
+              visible={mostrarModalEliminar}
+              modo="Eliminar"
+              texto="¿Deseas eliminar tu carta?"
+              onConfirm={() => {
+                eliminarCarta(idCarta)
+                  .then(() => {
+                    setMostrarModalEliminar(false);
+                    setIdCarta(null);
+                    setModoBoton("Crear");
+                    window.location.reload(); // o navigate("/") para redirigir
+                  })
+                  .catch(() => {
+                    alert("Error al eliminar la carta");
+                  });
+              }}
+              onCancel={() => setMostrarModalEliminar(false)}
+            />
           </div>
-           
         </div>
-        
       )}
     </>
   );
