@@ -1,8 +1,6 @@
 import React from "react";
 
-
-
-export const ConfirmModal = ({ texto, modo , visible, onConfirm, onCancel }) => {
+export const ConfirmModal = ({ texto, modo, visible, onConfirm, onCancel }) => {
   if (!visible) return null;
 
   return (

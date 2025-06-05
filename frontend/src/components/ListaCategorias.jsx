@@ -4,6 +4,7 @@ import { ConfirmModal } from "./ConfirmModal";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { getUsuarioActual } from "../utils/auth";
 
 export const ListaCategorias = () => {
   const [categorias, setCategorias] = useState([]);
@@ -12,6 +13,7 @@ export const ListaCategorias = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+  const usuario = getUsuarioActual();
 
   const cargarCategorias = () => {
     getCategorias()
@@ -20,6 +22,10 @@ export const ListaCategorias = () => {
   };
 
   useEffect(() => {
+    if (!usuario || usuario.rol !== "ADMIN") {
+      navigate("/");
+      return;
+    }
     cargarCategorias();
   }, []);
 

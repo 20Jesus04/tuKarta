@@ -70,11 +70,28 @@ export class RestauranteController {
   }
 
   @Patch(':id')
-  update(
+  @UseInterceptors(FileInterceptor('imagen'))
+  async update(
     @Param('id') id: string,
-    @Body() updateRestauranteDto: UpdateRestauranteDto,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: any,
   ) {
-    return this.restauranteService.update(+id, updateRestauranteDto);
+    let imageUrl: string | undefined;
+
+    // Subir imagen a Cloudinary si se incluye
+    if (file) {
+      imageUrl = await subirImagenDesdeBuffer(file.buffer);
+    }
+
+    // Construir DTO combinando body + imagen si existe
+    const updateDto: UpdateRestauranteDto = {
+      ...(body.nombre && { nombre: body.nombre }),
+      ...(body.direccion && { direccion: body.direccion }),
+      ...(body.telefono && { telefono: body.telefono }),
+      ...(imageUrl && { imagen_url: imageUrl }),
+    };
+
+    return this.restauranteService.update(+id, updateDto);
   }
 
   @Delete(':id')

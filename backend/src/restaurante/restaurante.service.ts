@@ -72,8 +72,30 @@ export class RestauranteService {
     id: number,
     updateRestauranteDto: UpdateRestauranteDto,
   ): Promise<Restaurante> {
-    await this.restauranteRepository.update(id, updateRestauranteDto);
-    return this.findOne(id);
+    const restaurante = await this.restauranteRepository.findOne({
+      where: { id },
+      relations: ['dueno'],
+    });
+
+    if (!restaurante) {
+      throw new NotFoundException(`Restaurante con ID ${id} no encontrado`);
+    }
+
+    // Actualizar solo los campos proporcionados
+    if (updateRestauranteDto.nombre) {
+      restaurante.nombre = updateRestauranteDto.nombre;
+    }
+    if (updateRestauranteDto.direccion) {
+      restaurante.direccion = updateRestauranteDto.direccion;
+    }
+    if (updateRestauranteDto.telefono) {
+      restaurante.telefono = updateRestauranteDto.telefono;
+    }
+    if (updateRestauranteDto.imagen_url) {
+      restaurante.imagen_url = updateRestauranteDto.imagen_url;
+    }
+
+    return await this.restauranteRepository.save(restaurante);
   }
 
   async remove(id: number): Promise<void> {

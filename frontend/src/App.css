@@ -347,20 +347,6 @@ a {
 
 /* login y register */
 
-/* .botonAuth {
-  background: white;
-  color: var(--naranja);
-  border: 2px solid var(--naranja);
-  padding: 8px 20px;
-  border-radius: 50px;
-  font-weight: 600;
-  transition: 0.2s ease;
-}
-
-.botonAuth:hover {
-  background-color: var(--naranja);
-  color: white;
-}  */
 
 .botonEliminar {
   background: white;
@@ -795,7 +781,7 @@ form select.form-input option {
 
 .imagen-carta {
   width: 100%;
-  aspect-ratio: 1 / 1.414; /* proporción A4 */
+  aspect-ratio: 1 / 1.414;  
   object-fit: cover;
   border-radius: 8px;
   border: 2px solid #ff6600;
@@ -864,9 +850,9 @@ form select.form-input option {
 .plato-descripcion,
 .plato-nombre,
 .valoracion-comentario {
-  word-wrap: break-word; /* Rompe palabras largas */
-  overflow-wrap: break-word; /* Soporte moderno */
-  white-space: pre-line; /* Permite saltos de línea y ajusta */
+  word-wrap: break-word; 
+  overflow-wrap: break-word; 
+  white-space: pre-line;
   line-height: 1.5;
 }
 
@@ -886,7 +872,7 @@ form select.form-input option {
 }
 
 .plato-descripcion {
-  margin: 0.3rem 0 0 0;
+  margin: 0rem 0 0 0;
   color: #666;
   font-style: italic;
   font-size: 0.95rem;
@@ -1599,4 +1585,14 @@ form select.form-input option {
 .icono-corazon {
   color: red;
   font-size: 1.4rem;
+}
+
+/* Ver datos de restaurante  */
+
+.imagen-restaurante {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 10px;
+  margin: 1.5rem auto;
+  display: block;
 }

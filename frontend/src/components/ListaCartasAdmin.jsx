@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 export const ListaCartasAdmin = () => {
-   const [cartas, setCartas] = useState([]);
+  const [cartas, setCartas] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [cartaSeleccionada, setCartaSeleccionada] = useState(null);
   const [error, setError] = useState(null);
@@ -22,6 +22,10 @@ export const ListaCartasAdmin = () => {
   };
 
   useEffect(() => {
+    if (!usuario || usuario.rol !== "ADMIN") {
+      navigate("/");
+      return;
+    }
     cargarCartas();
   }, []);
 
@@ -74,4 +78,4 @@ export const ListaCartasAdmin = () => {
       />
     </>
   );
-}
+};

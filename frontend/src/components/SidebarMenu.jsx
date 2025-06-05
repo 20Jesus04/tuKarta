@@ -101,6 +101,13 @@ export const SidebarMenu = () => {
                   Ver mi perfil
                 </Link>
               </li>
+              {usuario?.rol === "DUENO" && (
+                <li>
+                  <Link to="/ver-restaurante" onClick={() => setAbierto(false)}>
+                    Mi Restaurante
+                  </Link>
+                </li>
+              )}
 
               {usuario?.rol === "ADMIN" && (
                 <li>

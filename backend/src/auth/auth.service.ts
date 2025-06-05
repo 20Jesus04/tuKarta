@@ -2,12 +2,14 @@ import {
   Injectable,
   UnauthorizedException,
   ConflictException,
+  // NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-
+// import { randomBytes } from 'crypto';
+// import { addHours } from 'date-fns';
 import { Usuario } from '../usuario/entities/usuario.entity';
 import { CreateUsuarioDto } from '../usuario/dto/create-usuario.dto';
 import { LoginDto } from './dto/login.dto';
@@ -68,4 +70,24 @@ export class AuthService {
       },
     };
   }
+
+  // async iniciarRecuperacionPassword(email: string) {
+  //   const usuario = await this.usuarioRepository.findOne({ where: { email } });
+
+  //   if (!usuario) {
+  //     throw new NotFoundException('No se encontró un usuario con ese email');
+  //   }
+
+  //   // Generar token y fecha de expiración
+  //   const token = randomBytes(32).toString('hex');
+  //   const expiracion = addHours(new Date(), 1); // expira en 1 hora
+
+  //   usuario.tokenRecuperacion = token;
+  //   usuario.tokenExpiracion = expiracion;
+
+  //   await this.usuarioRepository.save(usuario);
+
+  //   // Aquí podrías enviar el token por email (o devolverlo para test)
+  //   return { mensaje: 'Se ha generado el token de recuperación', token };
+  // }
 }

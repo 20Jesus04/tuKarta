@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { getResumenAdmin } from "../services/adminService";
 import { Tarjeta } from "./Tarjeta";
+import { getUsuarioActual } from "../utils/auth";
+import { useNavigate } from "react-router-dom";
 
 export const AdminDashboard = () => {
   const [resumen, setResumen] = useState(null);
   const [error, setError] = useState(null);
+  const usuario = getUsuarioActual();
 
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!usuario || usuario.rol !== "ADMIN") {
+      navigate("/");
+      return;
+    }
     getResumenAdmin()
       .then((res) => setResumen(res.data))
       .catch((err) => {
@@ -21,19 +29,36 @@ export const AdminDashboard = () => {
 
   return (
     <>
-    <div className="admin-dashboard">
-      <h2>Panel de Control</h2>
-      <div className="tarjetas-grid">
-        <Tarjeta titulo="Usuarios" cantidad={resumen.totalUsuarios} ruta="/admin/usuarios" />
-        <Tarjeta titulo="Cartas" cantidad={resumen.totalCarta} ruta="/admin/cartas" />
-        <Tarjeta titulo="Categorías" cantidad={resumen.totalCategorias} ruta="/admin/categorias" />
-        <Tarjeta titulo="Platos" cantidad={resumen.totalPlatos} ruta="/admin/platos" />
-        <Tarjeta titulo="Valoraciones" cantidad={resumen.totalValoraciones} ruta="/admin/valoraciones" />
+      <div className="admin-dashboard">
+        <h2>Panel de Control</h2>
+        <div className="tarjetas-grid">
+          <Tarjeta
+            titulo="Usuarios"
+            cantidad={resumen.totalUsuarios}
+            ruta="/admin/usuarios"
+          />
+          <Tarjeta
+            titulo="Cartas"
+            cantidad={resumen.totalCarta}
+            ruta="/admin/cartas"
+          />
+          <Tarjeta
+            titulo="Categorías"
+            cantidad={resumen.totalCategorias}
+            ruta="/admin/categorias"
+          />
+          <Tarjeta
+            titulo="Platos"
+            cantidad={resumen.totalPlatos}
+            ruta="/admin/platos"
+          />
+          <Tarjeta
+            titulo="Valoraciones"
+            cantidad={resumen.totalValoraciones}
+            ruta="/admin/valoraciones"
+          />
+        </div>
       </div>
-    </div>
     </>
-    
   );
 };
-
-

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { ConfirmModal } from "./ConfirmModal";
+import { getUsuarioActual } from "../utils/auth";
 
 export const ListaUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -12,6 +13,7 @@ export const ListaUsuarios = () => {
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
 
   const navigate = useNavigate();
+  const usuario = getUsuarioActual();
 
   const cargarUsuarios = () => {
     getUsuarios()
@@ -25,6 +27,10 @@ export const ListaUsuarios = () => {
   };
 
   useEffect(() => {
+    if (!usuario || usuario.rol !== "ADMIN") {
+      navigate("/");
+      return;
+    }
     cargarUsuarios();
   }, []);
 

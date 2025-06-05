@@ -20,6 +20,8 @@ import "slick-carousel/slick/slick-theme.css";
 import VerPerfil from "./components/VerPerfil.jsx";
 import EditarPerfil from "./components/EditarPerfil.jsx";
 import { VistaFavoritos } from "./components/VistaFavoritos.jsx";
+import VerRestaurante from "./components/VerRestaurante.jsx";
+import EditarRestaurante from "./components/EditarRestaurante.jsx";
 
 export const App = () => {
   const [terminoBusqueda, setTerminoBusqueda] = useState("");
@@ -39,13 +41,13 @@ export const App = () => {
           <div className="buscadorSeccion">
             <div className="input-contenedor">
               <Link to="/">
-              <input
-                type="text"
-                className="barraBusqueda"
-                placeholder="Buscar cartas"
-                value={terminoBusqueda}
-                onChange={(e) => setTerminoBusqueda(e.target.value)}
-              />
+                <input
+                  type="text"
+                  className="barraBusqueda"
+                  placeholder="Buscar cartas"
+                  value={terminoBusqueda}
+                  onChange={(e) => setTerminoBusqueda(e.target.value)}
+                />
               </Link>
               {terminoBusqueda && (
                 <button
@@ -99,6 +101,8 @@ export const App = () => {
           <Route path="/admin/platos" element={<ListaPlatos />} />
           <Route path="/admin/valoraciones" element={<ListaValoraciones />} />
           <Route path="/favoritos" element={<VistaFavoritos />} />
+          <Route path="/ver-restaurante" element={<VerRestaurante />} />
+          <Route path="/editar-restaurante" element={<EditarRestaurante />} />
         </Routes>
       </Router>
     </>

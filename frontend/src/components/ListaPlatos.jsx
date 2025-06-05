@@ -22,7 +22,7 @@ export const ListaPlatos = () => {
         setError("Error al cargar platos");
       });
   };
-console.log(platos)
+  console.log(platos);
   useEffect(() => {
     cargarPlatos();
   }, []);
@@ -57,10 +57,10 @@ console.log(platos)
                   <p>
                     <strong>Nombre del plato:</strong> {plato.nombre}
                   </p>
-                   <p>
+                  <p>
                     <strong>Descripción del plato:</strong> {plato.descripcion}
                   </p>
-                   <p>
+                  <p>
                     <strong>Precio del plato:</strong> {plato.precio}€
                   </p>
                   <p>

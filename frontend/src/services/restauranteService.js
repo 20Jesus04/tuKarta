@@ -28,3 +28,13 @@ export const crearRestauranteConImagen = async (datos) => {
 export const getRestaurantePorDueno = (idDueno) => {
   return API_RESTAURANTE.get(`/dueno/${idDueno}`);
 };
+
+export const actualizarRestaurante = async (idRestaurante, datos) => {
+  const res = await API_RESTAURANTE.patch(`/${idRestaurante}`, datos, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data;
+};

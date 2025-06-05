@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { getValoraciones, eliminarValoracion } from "../services/valoracionServices";
+import {
+  getValoraciones,
+  eliminarValoracion,
+} from "../services/valoracionServices";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faStar as faStarSolid,
+} from "@fortawesome/free-solid-svg-icons";
 import { ConfirmModal } from "./ConfirmModal";
 
 export const ListaValoraciones = () => {
@@ -18,7 +24,7 @@ export const ListaValoraciones = () => {
       .catch(() => setError("Error al cargar las valoraciones"));
   };
 
-  console.log(valoraciones)
+  console.log(valoraciones);
 
   useEffect(() => {
     cargarValoraciones();
@@ -47,7 +53,7 @@ export const ListaValoraciones = () => {
 
   return (
     <>
-      <button className="btnVolverDashboard" onClick={() => navigate("/admin")}> 
+      <button className="btnVolverDashboard" onClick={() => navigate("/admin")}>
         <FontAwesomeIcon icon={faChevronLeft} /> Volver al Panel de control
       </button>
 
@@ -60,13 +66,27 @@ export const ListaValoraciones = () => {
             valoraciones.map((v) => (
               <div className="usuarioCardCompact" key={v.id}>
                 <div className="infoUsuario">
-                  <p><strong>Puntuación:</strong> {renderEstrellas(v.puntuacion)}</p>
-                  <p><strong>Comentario:</strong> {v.comentario}</p>
-                  <p><strong>Usuario:</strong> {v.id_usuario?.nombre}</p>
-                  <p><strong>Carta:</strong> {v.id_carta?.nombre}</p>
-                  <p><strong>Restaurante:</strong> {v.id_carta?.restaurante?.nombre}</p>
+                  <p>
+                    <strong>Puntuación:</strong> {renderEstrellas(v.puntuacion)}
+                  </p>
+                  <p>
+                    <strong>Comentario:</strong> {v.comentario}
+                  </p>
+                  <p>
+                    <strong>Usuario:</strong> {v.id_usuario?.nombre}
+                  </p>
+                  <p>
+                    <strong>Carta:</strong> {v.id_carta?.nombre}
+                  </p>
+                  <p>
+                    <strong>Restaurante:</strong>{" "}
+                    {v.id_carta?.restaurante?.nombre}
+                  </p>
                 </div>
-                <button className="btnEliminar" onClick={() => handleEliminar(v.id)}>
+                <button
+                  className="btnEliminar"
+                  onClick={() => handleEliminar(v.id)}
+                >
                   Eliminar
                 </button>
               </div>

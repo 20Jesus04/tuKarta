@@ -55,7 +55,11 @@ export const GestorImagenesCarta = ({ idCarta }) => {
   };
 
   const todasLasImagenes = [
-    ...imagenesSubidas.map((img) => ({ tipo: "subida", src: img.url, id: img.id })),
+    ...imagenesSubidas.map((img) => ({
+      tipo: "subida",
+      src: img.url,
+      id: img.id,
+    })),
     ...imagenesNuevas.map((file, index) => ({
       tipo: "nueva",
       src: URL.createObjectURL(file),
@@ -63,21 +67,24 @@ export const GestorImagenesCarta = ({ idCarta }) => {
     })),
   ];
 
-const sliderSettings = {
-  dots: true,
-  infinite: false,
-  speed: 500,
-  slidesToShow: Math.min(3, todasLasImagenes.length),
-  slidesToScroll: 1,
-};
-
-
+  const sliderSettings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: Math.min(3, todasLasImagenes.length),
+    slidesToScroll: 1,
+  };
 
   return (
     <div className="gestor-imagenes-carta">
       <h3>Gestión de Imágenes</h3>
 
-      <input type="file" accept="image/*" multiple onChange={handleInputChange} />
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={handleInputChange}
+      />
 
       {imagenesNuevas.length > 0 && (
         <button onClick={handleSubir} className="btn-subir">
@@ -92,9 +99,16 @@ const sliderSettings = {
               <img
                 src={img.src}
                 alt={`Imagen ${i}`}
-                style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }}
+                style={{
+                  width: "100%",
+                  maxHeight: "200px",
+                  objectFit: "cover",
+                }}
               />
-              <button onClick={() => handleEliminar(img)} className="btn-eliminar-imagen">
+              <button
+                onClick={() => handleEliminar(img)}
+                className="btn-eliminar-imagen"
+              >
                 Eliminar
               </button>
             </div>
