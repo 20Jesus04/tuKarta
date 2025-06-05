@@ -15,6 +15,7 @@ export const Home = ({ terminoBusqueda }) => {
   const [error, setError] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [rolUsuario, setRolUsuario] = useState(null);
+  const [usuario, setUsuario] = useState(null);
   const [modoBoton, setModoBoton] = useState("Crear");
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const [orden, setOrden] = useState("");
@@ -23,11 +24,11 @@ export const Home = ({ terminoBusqueda }) => {
 
   useEffect(() => {
     const usuario = getUsuarioActual();
+    setUsuario(usuario);
 
     if (usuario && usuario.rol === "DUENO") {
       setRolUsuario(usuario.rol);
 
-      /** Buscar el restaurante del dueño y comprobar si tiene una carta creada */
       getRestaurantePorDueno(usuario.sub)
         .then((res) => {
           const restauranteId = res.data.id;
@@ -39,7 +40,7 @@ export const Home = ({ terminoBusqueda }) => {
               }
             })
             .catch(() => {
-              setModoBoton("Crear"); // Si no tiene carta
+              setModoBoton("Crear");
             });
         })
         .catch((err) => {
@@ -80,15 +81,17 @@ export const Home = ({ terminoBusqueda }) => {
   return (
     <>
       <div className="App">
-        <button
-          className="btnFiltro"
-          onClick={() => setMostrarFiltros(!mostrarFiltros)}
-        >
-          <i className="fa-solid fa-sliders" style={{ marginRight: "8px" }}></i>
-          {mostrarFiltros ? "Ocultar filtros" : "Filtrar"}
-        </button>
+        {usuario && (
+          <button
+            className="btnFiltro"
+            onClick={() => setMostrarFiltros(!mostrarFiltros)}
+          >
+            <i className="fa-solid fa-sliders" style={{ marginRight: "8px" }}></i>
+            {mostrarFiltros ? "Ocultar filtros" : "Filtrar"}
+          </button>
+        )}
 
-        {mostrarFiltros && (
+        {usuario && mostrarFiltros && (
           <div className="filtroCaja">
             <label>
               Ordenar por:{" "}
@@ -126,13 +129,9 @@ export const Home = ({ terminoBusqueda }) => {
           title={`${modoBoton} carta`}
         >
           {modoBoton === "Editar" ? (
-            <>
-              <i className="fa-solid fa-pen-to-square"></i>
-            </>
+            <i className="fa-solid fa-pen-to-square"></i>
           ) : (
-            <>
-              <i className="fa-solid fa-plus"></i>
-            </>
+            <i className="fa-solid fa-plus"></i>
           )}
         </button>
       )}
