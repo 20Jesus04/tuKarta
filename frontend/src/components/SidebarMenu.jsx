@@ -91,29 +91,54 @@ export const SidebarMenu = () => {
             </button>
             <ul className="listaMenu">
               <li>
-                <Link to="/" onClick={() => setAbierto(false)}>
+                <button
+                  className="botonAuth"
+                  onClick={() => {
+                    navigate("/");
+                    setAbierto(false);
+                  }}
+                >
                   Inicio
-                </Link>
+                </button>
               </li>
 
               <li>
-                <Link to="/PerfilUsuario" onClick={() => setAbierto(false)}>
+                <button
+                  className="botonAuth"
+                  onClick={() => {
+                    navigate("/PerfilUsuario");
+                    setAbierto(false);
+                  }}
+                >
                   Ver mi perfil
-                </Link>
+                </button>
               </li>
+
               {usuario?.rol === "DUENO" && (
                 <li>
-                  <Link to="/ver-restaurante" onClick={() => setAbierto(false)}>
+                  <button
+                    className="botonAuth"
+                    onClick={() => {
+                      navigate("/ver-restaurante");
+                      setAbierto(false);
+                    }}
+                  >
                     Mi Restaurante
-                  </Link>
+                  </button>
                 </li>
               )}
 
               {usuario?.rol === "ADMIN" && (
                 <li>
-                  <Link to="/admin" onClick={() => setAbierto(false)}>
+                  <button
+                    className="botonAuth"
+                    onClick={() => {
+                      navigate("/admin");
+                      setAbierto(false);
+                    }}
+                  >
                     Panel Admin
-                  </Link>
+                  </button>
                 </li>
               )}
 
