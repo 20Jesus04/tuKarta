@@ -16,11 +16,11 @@ export class Favorito {
   @ManyToOne(() => Usuario, (usuario) => usuario.favoritos, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'id_usuario' }) // 👈 nombre real de la columna en tu tabla
+  @JoinColumn({ name: 'id_usuario' })
   usuario: Usuario;
 
   @ManyToOne(() => Carta, (carta) => carta.favoritos, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'id_carta' }) // 👈 igual aquí
+  @JoinColumn({ name: 'id_carta' })
   carta: Carta;
 
   @CreateDateColumn({ name: 'fecha_agregado' })
