@@ -44,7 +44,7 @@ export const GestorImagenesCarta = ({ idCarta }) => {
       for (const img of imagenesNuevas) {
         const formData = new FormData();
         formData.append("imagen", img);
-        formData.append("idCarta", idCarta);
+        formData.append("id_carta", idCarta);
         await subir(formData);
       }
       setImagenesNuevas([]);

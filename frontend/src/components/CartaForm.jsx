@@ -114,7 +114,7 @@ export const CartaForm = ({ modo }) => {
       for (const img of nuevasImagenes) {
         const formData = new FormData();
         formData.append("imagen", img);
-        formData.append("idCarta", idCartaNuevo);
+        formData.append("id_carta", idCartaNuevo);
         await subir(formData);
       }
 
