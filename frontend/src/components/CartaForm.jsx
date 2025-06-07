@@ -225,7 +225,7 @@ export const CartaForm = ({ modo }) => {
                         setCategorias(nuevas);
                       }}
                     />
-
+                    <label>Descripción del plato:</label>
                     <input
                       type="text"
                       value={plato.descripcion}
@@ -237,7 +237,7 @@ export const CartaForm = ({ modo }) => {
                         setCategorias(nuevas);
                       }}
                     />
-
+                    <label>Precio del plato:</label>
                     <input
                       type="number"
                       step="0.01"

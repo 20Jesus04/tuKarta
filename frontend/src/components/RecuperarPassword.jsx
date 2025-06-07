@@ -10,7 +10,7 @@ export const RecuperarPassword = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMensaje("");
@@ -20,11 +20,10 @@ export const RecuperarPassword = () => {
     try {
       await solicitarRecuperacionPassword(email);
       setMensaje(
-        "✅ Revisa tu correo electrónico para continuar con la recuperación de tu contraseña."
+        "Revisa tu correo electrónico para continuar con la recuperación de tu contraseña."
       );
     } catch (err) {
-      console.error(err);
-      setError("❌ Error al solicitar recuperación.");
+      setError(" Error al solicitar recuperación. Posibelmente no se ha registrado este correo.");
     } finally {
       setLoading(false);
     }

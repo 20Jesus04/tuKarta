@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUsuario } from "../services/authService";
+import { eliminarUsuario } from "../services/usuariosService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { ConfirmModal } from "./ConfirmModal";
 
 const VerPerfil = () => {
   const navigate = useNavigate();
   const usuario = getUsuario();
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   if (!usuario) {
     return <p>No hay información del usuario. Inicia sesión.</p>;
@@ -25,9 +28,20 @@ const VerPerfil = () => {
     }
   };
 
+  const handleEliminar = async () => {
+    try {
+      await eliminarUsuario(usuario.id);
+      localStorage.clear();
+      navigate("/login");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error al eliminar usuario:", error);
+      alert("Hubo un error al intentar eliminar tu cuenta.");
+    }
+  };
+
   return (
     <>
-      {/* Botón fuera de la caja del perfil */}
       <div className="volver-wrapper">
         <button className="boton-volver" onClick={() => navigate("/")}>
           <FontAwesomeIcon icon={faChevronLeft} /> Volver a inicio
@@ -53,7 +67,22 @@ const VerPerfil = () => {
         >
           Editar Perfil
         </button>
+
+        <button
+          className="btn-eliminar-usuario"
+          onClick={() => setMostrarModal(true)}
+        >
+          Eliminar cuenta
+        </button>
       </div>
+
+      <ConfirmModal
+        visible={mostrarModal}
+        texto="¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer."
+        modo="Eliminar"
+        onConfirm={handleEliminar}
+        onCancel={() => setMostrarModal(false)}
+      />
     </>
   );
 };
