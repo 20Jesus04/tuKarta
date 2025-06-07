@@ -17,4 +17,17 @@ export class AuthController {
   async login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
+
+  @Post('recuperar')
+  async solicitarRecuperacion(@Body('email') email: string) {
+    return this.authService.iniciarRecuperacionPassword(email);
+  }
+
+  @Post('restablecer')
+  async restablecerPassword(
+    @Body('token') token: string,
+    @Body('nuevaPassword') nuevaPassword: string,
+  ) {
+    return this.authService.restablecerPassword(token, nuevaPassword);
+  }
 }

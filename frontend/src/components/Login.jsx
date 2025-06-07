@@ -70,7 +70,11 @@ function Login() {
         <button className="form-button" type="submit">
           Entrar
         </button>
-
+        <p className="form-link-text">
+          <Link to="/recuperar-password" className="form-link">
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </p>
         {error && <p className="form-error">{error}</p>}
 
         <p className="form-link-text">

@@ -38,9 +38,9 @@ export class Usuario {
   @OneToMany(() => Favorito, (favorito) => favorito.usuario)
   favoritos: Favorito[];
 
-  // @Column({ nullable: true })
-  // tokenRecuperacion: string;
+  @Column({ type: 'varchar', nullable: true })
+  tokenRecuperacion?: string | null;
 
-  // @Column({ nullable: true, type: 'timestamp' })
-  // tokenExpiracion: Date;
+  @Column({ type: 'timestamp', nullable: true })
+  tokenExpiracion?: Date | null;
 }

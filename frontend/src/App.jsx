@@ -22,6 +22,8 @@ import EditarPerfil from "./components/EditarPerfil.jsx";
 import { VistaFavoritos } from "./components/VistaFavoritos.jsx";
 import VerRestaurante from "./components/VerRestaurante.jsx";
 import EditarRestaurante from "./components/EditarRestaurante.jsx";
+import { RecuperarPassword } from "./components/RecuperarPassword.jsx";
+import { NuevaPassword } from "./components/NuevaPassword.jsx";
 
 export const App = () => {
   const [terminoBusqueda, setTerminoBusqueda] = useState("");
@@ -103,6 +105,8 @@ export const App = () => {
           <Route path="/favoritos" element={<VistaFavoritos />} />
           <Route path="/ver-restaurante" element={<VerRestaurante />} />
           <Route path="/editar-restaurante" element={<EditarRestaurante />} />
+          <Route path="/recuperar-password" element={<RecuperarPassword />} />
+          <Route path="/restablecer-password/:token" element={<NuevaPassword />} />
         </Routes>
       </Router>
     </>
