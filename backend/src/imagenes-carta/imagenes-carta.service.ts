@@ -67,8 +67,6 @@ export class ImagenesCartaService {
 
     await this.imagenRepository.remove(imagen);
 
-    // Si además estás almacenando físicamente la imagen en disco o en un bucket, aquí podrías eliminarla también
-
     return { mensaje: `Imagen con ID ${id} eliminada correctamente` };
   }
 }

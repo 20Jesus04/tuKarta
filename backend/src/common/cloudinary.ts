@@ -13,8 +13,6 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-// Esto debe mostrar dvljkxv1n
-
 export default cloudinary;
 
 export async function subirImagenDesdeBuffer(buffer: Buffer): Promise<string> {

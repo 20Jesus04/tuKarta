@@ -56,7 +56,7 @@ export class UsuarioService {
       usuario.nombre = dto.nombre;
     }
 
-    // Si se proporciona una nueva contraseña, verificar que venga también la antigua
+    // Si se proporciona una nueva contraseña, verifica que venga también la antigua
     if (dto.password && dto.passwordAntigua) {
       const esCorrecta = await bcrypt.compare(
         dto.passwordAntigua,

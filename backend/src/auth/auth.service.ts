@@ -86,7 +86,6 @@ export class AuthService {
 
     await this.usuarioRepository.save(usuario);
 
-    // ✅ AHORA SÍ: Enviamos el correo
     await this.enviarCorreoRecuperacion(email, token);
 
     return {
